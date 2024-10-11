@@ -229,63 +229,68 @@
       }
 
       .card-section {
-  display: flex;
-  justify-content: space-between;
-  padding: 50px 0;
-}
+        display: flex;
+        justify-content: space-between;
+        padding: 50px 0;
+      }
 
-.card {
-  background-color: white;
-  padding: 20px;
-  text-align: center;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 30%;
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add transition */
-  margin: 0 10px;
-}
+      .card {
+        background-color: white;
+        padding: 20px;
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 30%;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        /* Add transition */
+        margin: 0 10px;
+      }
 
-.card:first-child {
-  margin-left: 0; /* Remove left margin for the first card */
-}
+      .card:first-child {
+        margin-left: 0;
+        /* Remove left margin for the first card */
+      }
 
-.card:last-child {
-  margin-right: 0; /* Remove right margin for the last card */
-}
+      .card:last-child {
+        margin-right: 0;
+        /* Remove right margin for the last card */
+      }
 
-.card:hover {
-  transform: translateY(-5px); /* Slightly lift the card */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
-}
+      .card:hover {
+        transform: translateY(-5px);
+        /* Slightly lift the card */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        /* Enhanced shadow */
+      }
 
-.card svg {
-  margin-bottom: 10px;
-  color: #28a745;
-  width: 50px;
-  height: 50px;
-}
+      .card svg {
+        margin-bottom: 10px;
+        color: #28a745;
+        width: 50px;
+        height: 50px;
+      }
 
-.card h2 {
-  margin-bottom: 10px;
-  font-size: 24px;
-  color: #333;
-}
+      .card h2 {
+        margin-bottom: 10px;
+        font-size: 24px;
+        color: #333;
+      }
 
-.card p {
-  color: #666;
-  font-size: 16px;
-}
+      .card p {
+        color: #666;
+        font-size: 16px;
+      }
 
-.card a {
-  display: inline-block;
-  margin-top: 20px;
-  color: #28a745;
-  text-decoration: none;
-}
+      .card a {
+        display: inline-block;
+        margin-top: 20px;
+        color: #28a745;
+        text-decoration: none;
+      }
 
-.card a:hover {
-  text-decoration: underline;
-}
+      .card a:hover {
+        text-decoration: underline;
+      }
     }
   </style>
 
@@ -300,9 +305,9 @@
         <h1 style="text-align: center;">Churn Prediction</h1>
       </div>
       <nav>
-        <a href="index.html">Home</a>
-        <a href="prediction.html">Prediction</a>
-        <a href="churn.html">Analysis</a>
+        <a href="/">Home</a>
+        <a href="/prediction">Prediction</a>
+        <a href="/analysis">Analysis</a>
       </nav>
     </div>
   </header>
@@ -314,8 +319,8 @@
         <p>Customer Churn Prediction using advanced machine learning techniques. Explore predictions and analysis
           through our interactive platform.</p>
         <div class="buttons">
-          <a href="prediction.html">Prediction</a>
-          <a href="churn.html">Analysis</a>
+          <a href="/prediction">Prediction</a>
+          <a href="/analysis">Analysis</a>
         </div>
       </div>
       <div>
@@ -363,7 +368,6 @@
       <p><strong>6. Model Inference:</strong><br>
         - Both the Random Forest and ANN models were used to make predictions on unseen data.</p>
 
-      <p>For more detailed information, you can refer to the <a href="/documentation">full documentation</a>.</p>
     </div>
   </section>
 
@@ -372,26 +376,10 @@
       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
       </svg>
-      <h2>Shooting Stars</h2>
-      <p>Analyze data with advanced techniques to identify customer churn early and accurately.</p>
-      <a href="/analysis">Learn More</a>
-    </div>
-    <div class="card">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-      </svg>
       <h2>Prediction Models</h2>
       <p>Explore how machine learning models help in predicting churn risks and improving customer retention strategies.
       </p>
       <a href="/prediction">Make a Prediction</a>
-    </div>
-    <div class="card">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-      </svg>
-      <h2>Future Insights</h2>
-      <p>Understand which customer behaviors are linked to higher churn probabilities through advanced insights.</p>
-      <a href="/future">Discover More</a>
     </div>
   </section>
 
