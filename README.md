@@ -34,6 +34,22 @@ The **Churn Prediction** project utilizes machine learning to forecast customer 
 - **Language:** Python 3.8+
 - **Libraries:** pandas, numpy, matplotlib, seaborn, scikit-learn, torch, Flask, pickle
 
+## Contributors ✨
+
+Thanks to these amazing people for contributing to this repository:
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+       <td align="center" valign="top" width="14.28%"><a href="https://github.com/alienx5499"><img src="https://avatars.githubusercontent.com/u/176830976?v=4?s=100" width="100px;" alt="Prabal Patra"/><br /><sub><b>Prabal Patra</b></sub></a><br /><a href="https://github.com/alienx5499" title="Code"></a></td>
+       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Nazim9945"><img src="https://avatars.githubusercontent.com/u/101595985?v=4?s=100" width="100px;" alt="Nazim Saifi"/><br /><sub><b>Nazim Saifi</b></sub></a><br /><a href="https://github.com/Nazim9945" title="Code"></a></td>
+    </tr>
+  </tbody>
+</table>
+
 ## Installation
 
 ### Prerequisites
