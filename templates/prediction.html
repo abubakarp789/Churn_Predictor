@@ -73,8 +73,9 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label for="time" class="form-label">Time</label>
-                        <input type="time" id="time" name="time" class="form-control" required>
+                        <input type="time" id="time" name="time" class="form-control" required step="1">
                     </div>
+                    
                     <div class="col-md-6">
                         <label for="gender" class="form-label">Gender</label>
                         <select class="form-select" id="gender" name="gender" required>
@@ -203,7 +204,7 @@
             
             <!-- Prediction Result -->
             <div class="result-container">
-                <h4 class="text-center text-primary">{{prediction_text}}</h4>
+                <h2 class="text-center text-primary">{{prediction_text}}</h2>
             </div>
         </div>
         
