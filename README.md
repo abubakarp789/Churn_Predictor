@@ -46,6 +46,7 @@ Thanks to these amazing people for contributing to this repository:
     <tr>
        <td align="center" valign="top" width="14.28%"><a href="https://github.com/alienx5499"><img src="https://avatars.githubusercontent.com/u/163229512?v=4" width="100px;" alt="Prabal Patra"/><br /><sub><b>Prabal Patra</b></sub></a><br /><a href="https://github.com/alienx5499" title="Code"></a></td>
        <td align="center" valign="top" width="14.28%"><a href="https://github.com/Nazim9945"><img src="https://avatars.githubusercontent.com/u/127049743?v=4" width="100px;" alt="Nazim Saifi"/><br /><sub><b>Nazim Saifi</b></sub></a><br /><a href="https://github.com/Nazim9945" title="Code"></a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/bala51214"><img src="https://avatars.githubusercontent.com/u/140279813?v=4" width="100px;" alt="Muhammad Bilal"/><br /><sub><b>Muhammad Bilal</b></sub></a><br /><a href="https://github.com/bala51214" title="Code"></a></td>
     </tr>
   </tbody>
 </table>
