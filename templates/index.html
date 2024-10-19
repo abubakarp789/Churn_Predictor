@@ -3,298 +3,17 @@
 
 <head>
   <!-- Required meta tags -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Custom CSS -->
-  <style>
-    body {
-      font-family: Georgia, 'Times New Roman', Times, serif;
-      margin: 0;
-      padding: 0;
-      color: #333;
-      background-color: #f7f7f7;
-    }
-
-    .container {
-      font-family: Georgia, 'Times New Roman', Times, serif;
-      width: 80%;
-      margin: 0 auto;
-    }
-
-    header {
-      background-color: #f8f8f8;
-      padding: 20px 0;
-      border-bottom: 1px solid #ddd;
-      text-align: center;
-    }
-
-    header .logo {
-      display: flex;
-      align-items: center;
-      font-size: 24px;
-      font-weight: bold;
-      color: #333;
-    }
-
-    header .logo svg {
-      margin-right: 10px;
-      background-color: #28a745;
-      padding: 8px;
-      border-radius: 50%;
-      color: white;
-
-    }
-
-    nav {
-      font-family: Georgia, 'Times New Roman', Times, serif;
-      display: flex;
-      justify-content: center;
-      padding: 15px 0;
-      background-color: #fff;
-      border-bottom: 2px solid #28a745;
-      font-size: 25px;
-
-    }
-
-    nav a {
-      margin: 0 20px;
-      text-decoration: none;
-      color: #333;
-      font-weight: bold;
-      transition: color 0.3s ease;
-    }
-
-    nav a:hover {
-      color: #28a745;
-    }
-
-    nav .logo {
-      flex-grow: 1;
-    }
-
-    .hero {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 100px 0;
-      font-family: Georgia, 'Times New Roman', Times, serif;
-      background-color: #e9f5ee;
-      border-radius: 10px;
-      /* Rounded corners for a softer look */
-      padding: 60px 20px;
-      /* Padding for top/bottom and left/right */
-      text-align: center;
-      /* Center text */
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      /* Soft shadow for depth */
-    }
-
-    .hero h1 {
-      font-size: 48px;
-      color: #333;
-
-    }
-
-    .hero p {
-      font-size: 1.2em;
-      line-height: 1.5;
-      margin-bottom: 20px;
-    }
-
-    .hero .buttons a {
-      display: inline-block;
-      padding: 10px 20px;
-      text-decoration: none;
-      background-color: #28a745;
-      color: white;
-      margin-right: 10px;
-      border-radius: 5px;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-
-    .hero .buttons a:hover {
-      background-color: #218838;
-      transform: translateY(-2px);
-    }
-
-    .card-section {
-      display: flex;
-      justify-content: space-between;
-      padding: 50px 0;
-    }
-
-    .card {
-      background-color: white;
-      padding: 20px;
-      text-align: center;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      width: 30%;
-    }
-
-    .card svg {
-      margin-bottom: 10px;
-      color: #28a745;
-      width: 50px;
-      height: 50px;
-    }
-
-    .card h2 {
-      margin-bottom: 10px;
-      font-size: 24px;
-      color: #333;
-    }
-
-    .card p {
-      color: #666;
-      font-size: 16px;
-    }
-
-    .card a {
-      display: inline-block;
-      margin-top: 20px;
-      color: #28a745;
-      text-decoration: none;
-    }
-
-    .card a:hover {
-      text-decoration: underline;
-    }
-
-    .testimonials {
-      padding: 50px 0;
-      background-color: #f1f1f1;
-      text-align: center;
-    }
-
-    .testimonials h1 {
-      font-size: 36px;
-      color: #333;
-      margin-bottom: 30px;
-    }
-
-    .testimonial {
-      background-color: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      display: flex;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .testimonial svg {
-      color: #999;
-      margin-right: 15px;
-    }
-
-    .testimonial p {
-      font-size: 16px;
-      color: #666;
-    }
-
-    .documentation {
-      background-color: #f7f7f7;
-      padding: 50px 0;
-    }
-
-    .documentation h2 {
-      font-size: 36px;
-      color: #333;
-      margin-bottom: 30px;
-      text-align: center;
-    }
-
-    .documentation p {
-      font-size: 16px;
-      line-height: 1.6;
-      color: #666;
-    }
-
-    footer {
-      background-color: #28a745;
-      color: white;
-      text-align: center;
-      padding: 10px 0;
-    }
-
-    /* Media Query for responsiveness */
-    @media (max-width: 768px) {
-      .hero {
-        flex-direction: column;
-        /* Stack elements vertically on small screens */
-        text-align: center;
-        /* Center text */
-      }
-
-      .card-section {
-        display: flex;
-        justify-content: space-between;
-        padding: 50px 0;
-      }
-
-      .card {
-        background-color: white;
-        padding: 20px;
-        text-align: center;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 30%;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        /* Add transition */
-        margin: 0 10px;
-      }
-
-      .card:first-child {
-        margin-left: 0;
-        /* Remove left margin for the first card */
-      }
-
-      .card:last-child {
-        margin-right: 0;
-        /* Remove right margin for the last card */
-      }
-
-      .card:hover {
-        transform: translateY(-5px);
-        /* Slightly lift the card */
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        /* Enhanced shadow */
-      }
-
-      .card svg {
-        margin-bottom: 10px;
-        color: #28a745;
-        width: 50px;
-        height: 50px;
-      }
-
-      .card h2 {
-        margin-bottom: 10px;
-        font-size: 24px;
-        color: #333;
-      }
-
-      .card p {
-        color: #666;
-        font-size: 16px;
-      }
-
-      .card a {
-        display: inline-block;
-        margin-top: 20px;
-        color: #28a745;
-        text-decoration: none;
-      }
-
-      .card a:hover {
-        text-decoration: underline;
-      }
-    }
-  </style>
+ 
 
   <title>Churn Prediction</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -332,46 +51,93 @@
   <!-- Add Documentation Section -->
   <section class="documentation">
     <div class="container">
-      <h2>Churn Risk Prediction Project Documentation</h2>
-
-      <p><strong>Project Overview:</strong> This project aims to predict the churn risk of customers using machine
-        learning techniques. The dataset contains customer-related information such as demographics, transaction
-        details, and behavior patterns, which are used to estimate the likelihood of customer churn. The process
-        involves data cleaning, preprocessing, visualization, and model training using different machine learning
-        algorithms including Decision Tree, Random Forest, and an Artificial Neural Network (ANN).</p>
-
-      <p><strong>1. Data Preprocessing:</strong><br>
-        - Dataset Import: The data is imported from a CSV file (`train.csv`). Missing categorical values in columns like
-        `region_category` are filled with the mode, and missing numerical values in `points_in_wallet` are filled with
-        the mean.<br>
-        - Feature Engineering: Date-related features are extracted from `joining_date` and `last_visit_time`, and
-        one-hot encoding is applied to categorical columns. Outliers in `avg_transaction_value` are removed using the
-        IQR method.
-      </p>
-
-      <p><strong>2. Data Visualization:</strong><br>
-        - Histograms, correlation heatmaps, and boxplots were used to explore relationships and the distribution of
-        features, with a special focus on `avg_transaction_value` and its relation to `churn_risk_score`.</p>
-
-      <p><strong>3. Feature Selection:</strong><br>
-        - Using an ExtraTreesRegressor, the top 20 important features for predicting churn risk were identified. These
-        features include `age`, `avg_transaction_value`, and `membership_category`.</p>
-
-      <p><strong>4. Model Training:</strong><br>
-        - Three models were trained: Decision Tree, Random Forest, and an Artificial Neural Network (ANN). The Random
-        Forest model was saved as `random_forest_model.pkl` and the ANN was built using PyTorch.</p>
-
-      <p><strong>5. Model Evaluation:</strong><br>
-        - Evaluation metrics were calculated for all models. Random Forest performed better than the Decision Tree, and
-        the ANN further improved the predictions.</p>
-
-      <p><strong>6. Model Inference:</strong><br>
-        - Both the Random Forest and ANN models were used to make predictions on unseen data.</p>
-
+      <h2 class="section-title">Churn Risk Prediction Project Documentation</h2>
+  
+      <div class="cards-wrapper">
+        <!-- Project Overview Card -->
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8cHJvamVjdCUyMG92ZXJ2aWV3fGVufDB8fDB8fHww" class="card-img" alt="Project Overview Image">
+          <div class="card-body">
+            <h3 class="card-title">Project Overview</h3>
+            <p class="card-text">
+              This project aims to predict the churn risk of customers using machine learning techniques. The dataset contains customer-related information such as demographics, transaction details, and behavior patterns, which are used to estimate the likelihood of customer churn. The process involves data cleaning, preprocessing, visualization, and model training using different machine learning algorithms including Decision Tree, Random Forest, and an Artificial Neural Network (ANN).
+            </p>
+          </div>
+        </div>
+  
+        <!-- Data Preprocessing Card -->
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8ZGF0YSUyMHByb2Nzc2luZ3xlbnwwfHwwfHx8MA%3D%3D" class="card-img" alt="Data Preprocessing">
+          <div class="card-body">
+            <h3 class="card-title">1. Data Preprocessing</h3>
+            <p class="card-text">
+              - Dataset Import: The data is imported from a CSV file (`train.csv`). Missing categorical values in columns like `region_category` are filled with the mode, and missing numerical values in `points_in_wallet` are filled with the mean.<br>
+              - Feature Engineering: Date-related features are extracted from `joining_date` and `last_visit_time`, and one-hot encoding is applied to categorical columns. Outliers in `avg_transaction_value` are removed using the IQR method.
+            </p>
+          </div>
+        </div>
+  
+        <!-- Data Visualization Card -->
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGRhdGElMjB2aXN1YWxpemF0aW9ufGVufDB8fDB8fHww" class="card-img" alt="Data Visualization">
+          <div class="card-body">
+            <h3 class="card-title">2. Data Visualization</h3>
+            <p class="card-text">
+              - Histograms, correlation heatmaps, and boxplots were used to explore relationships and the distribution of features, with a special focus on `avg_transaction_value` and its relation to `churn_risk_score`.
+            </p>
+          </div>
+        </div>
+  
+        <!-- Feature Selection Card -->
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGxpc3R8ZW58MHx8MHx8fDA%3D" class="card-img" alt="Feature Selection">
+          <div class="card-body">
+            <h3 class="card-title">3. Feature Selection</h3>
+            <p class="card-text">
+              - Using an ExtraTreesRegressor, the top 20 important features for predicting churn risk were identified. These features include `age`, `avg_transaction_value`, and `membership_category`.
+            </p>
+          </div>
+        </div>
+  
+        <!-- Model Training Card -->
+        <div class="card">
+          <img src="https://media.istockphoto.com/id/1487972668/photo/artificial-neural-network-abstract-technology-background.webp?a=1&b=1&s=612x612&w=0&k=20&c=La_mM2F9JXlUCq1zBj5LOyOh3l8CMG5kWsmylgCFgYQ=" class="card-img" alt="Model Training">
+          <div class="card-body">
+            <h3 class="card-title">4. Model Training</h3>
+            <p class="card-text">
+              - Three models were trained: Decision Tree, Random Forest, and an Artificial Neural Network (ANN). The Random Forest model was saved as `random_forest_model.pkl` and the ANN was built using PyTorch.
+            </p>
+          </div>
+        </div>
+  
+        <!-- Model Evaluation Card -->
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1639754391037-98dd3cb74e09?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8ZXZhbHV0b24lMjBjaGFydHxlbnwwfHwwfHx8MA%3D%3D" class="card-img" alt="Model Evaluation">
+          <div class="card-body">
+            <h3 class="card-title">5. Model Evaluation</h3>
+            <p class="card-text">
+              - Evaluation metrics were calculated for all models. Random Forest performed better than the Decision Tree, and the ANN further improved the predictions.
+            </p>
+          </div>
+        </div>
+  
+        <!-- Model Inference Card -->
+        <div class="card">
+          <img src="https://media.istockphoto.com/id/2152007132/photo/graphic-designer-exploring-ui-ux-on-digital-tablet.webp?a=1&b=1&s=612x612&w=0&k=20&c=moRjCCZx3cm90apYrYQduY-vlLXdU3oGzhiiHTIh2zU=" class="card-img" alt="Model Inference">
+          <div class="card-body">
+            <h3 class="card-title">6. Model Inference</h3>
+            <p class="card-text">
+              - Both the Random Forest and ANN models were used to make predictions on unseen data.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
+  
+  
 
-  <section class="card-section container">
+  <section style="display: flex;align-items: center;justify-content: center;" class="card-section container">
     <div class="card">
       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
@@ -379,7 +145,7 @@
       <h2>Prediction Models</h2>
       <p>Explore how machine learning models help in predicting churn risks and improving customer retention strategies.
       </p>
-      <a href="/prediction">Make a Prediction</a>
+      <a href="prediction.html">Make a Prediction</a>
     </div>
   </section>
 
