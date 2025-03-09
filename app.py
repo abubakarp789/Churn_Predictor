@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import pickle
 model = pickle.load(open('random_forest_model.pkl', 'rb'))
+import os
 
 
 app = Flask(__name__)
@@ -273,4 +274,4 @@ def prediction():
         return render_template("prediction.html")
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 10000)))
