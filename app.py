@@ -4,13 +4,13 @@ import numpy as np
 import pandas as pd
 import pickle
 import os
+import gdown
 
 MODEL_PATH = 'random_forest_model.pkl'
 MODEL_DRIVE_URL = 'https://drive.google.com/uc?id=1mvIWEttclH_8HRElFP2zJbuT_vS0t1kx'
 
 def download_model():
-    if not os.path.exists(MODEL_PATH):
-        import gdown
+    if not os.path.exists(MODEL_PATH): 
         print('Downloading model from Google Drive...')
         gdown.download(MODEL_DRIVE_URL, MODEL_PATH, quiet=False)
 
