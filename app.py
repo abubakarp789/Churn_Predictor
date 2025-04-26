@@ -1,5 +1,5 @@
 # save this as app.py
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, send_from_directory
 import numpy as np
 import pandas as pd
 import pickle
@@ -13,12 +13,32 @@ app = Flask(__name__)
 def home():
     return render_template("index.html")
 
-@app.route('/analysis')
-def analysis():
+@app.route('/churn')
+def churn():
     return render_template("churn.html")
 
 @app.route('/prediction', methods=['GET', 'POST'])
 def prediction():
+    sample_data = {
+        'age': 30,
+        'last_login': 5,
+        'avg_time_spent': 45,
+        'avg_transaction_value': 120.50,
+        'points_in_wallet': 200,
+        'date': '2023-06-01',
+        'time': '14:30:00',
+        'gender': 'M',
+        'region_category': 'City',
+        'membership_category': 'Gold Membership',
+        'joined_through_referral': 'Yes',
+        'preferred_offer_types': 'Gift Vouchers/Coupons',
+        'medium_of_operation': 'Smartphone',
+        'internet_option': 'Wi-Fi',
+        'used_special_discount': 'Yes',
+        'offer_application_preference': 'Yes',
+        'past_complaint': 'No',
+        'feedback': 'Reasonable Price'
+    }
     if request.method == "POST":
         age=int(request.form['age'])
         last_login=int(request.form['last_login'])
@@ -269,9 +289,13 @@ def prediction():
         prediction = model.predict(df)
         # print(prediction)
                 
-        return render_template("prediction.html", prediction_text="Churn Score is {}".format(prediction))        
+        return render_template("prediction.html", prediction_text="Churn Score is {}".format(prediction), sample_data=request.form)        
     else:
-        return render_template("prediction.html")
+        return render_template("prediction.html", sample_data=sample_data)
+
+@app.route('/plots/<path:filename>')
+def plots(filename):
+    return send_from_directory('plots', filename)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 10000)))

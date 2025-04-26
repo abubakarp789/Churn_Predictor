@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -11,552 +11,261 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <!-- Custom CSS -->
   <style>
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --accent-color: #e74c3c;
+      --light-bg: #f8f9fa;
+      --dark-text: #2c3e50;
+      --light-text: #ecf0f1;
+    }
+
     body {
-      font-family: "Inter", sans-serif;
-      margin: 0;
-      padding: 0;
-      color: #333;
-      background-color: #f7f7f7;
+      font-family: 'Poppins', sans-serif;
+      color: var(--dark-text);
+      background-color: var(--light-bg);
     }
 
-    .container {
-      font-family: "Inter", sans-serif;
-      width: 80%;
-      margin: 0 auto;
+    .navbar {
+      background-color: var(--primary-color);
+      padding: 1rem 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
-    header {
-      background-color: #f8f8f8;
-      padding: 20px 0;
-      border-bottom: 1px solid #ddd;
-      text-align: center;
+    .navbar-brand {
+      font-weight: 700;
+      color: var(--light-text) !important;
     }
 
-    header .logo {
-      display: flex;
-      align-items: center;
-      font-size: 24px;
-      font-weight: bold;
-      color: #333;
-    }
-
-    header .logo svg {
-      margin-right: 10px;
-      background-color: #28a745;
-      padding: 8px;
-      border-radius: 50%;
-      color: white;
-
-    }
-
-    nav {
-      font-family: Georgia, 'Times New Roman', Times, serif;
-      display: flex;
-      justify-content: center;
-      padding: 15px 0;
-      background-color: #fff;
-      border-bottom: 2px solid #28a745;
-      font-size: 25px;
-
-    }
-
-    nav a {
-      margin: 0 20px;
-      text-decoration: none;
-      color: #333;
-      font-weight: bold;
+    .nav-link {
+      color: var(--light-text) !important;
+      font-weight: 500;
+      margin: 0 1rem;
       transition: color 0.3s ease;
     }
 
-    nav a:hover {
-      color: #28a745;
+    .nav-link:hover {
+      color: var(--secondary-color) !important;
     }
 
-    nav .logo {
-      flex-grow: 1;
+    .hero-section {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: var(--light-text);
+      padding: 5rem 0;
+      margin-bottom: 3rem;
     }
 
-    .hero {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 100px 0;
-      font-family: Georgia, 'Times New Roman', Times, serif;
-      background-color: #e9f5ee;
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      opacity: 0.9;
+      margin-bottom: 2rem;
+    }
+
+    .feature-card {
+      background: white;
       border-radius: 10px;
-      /* Rounded corners for a softer look */
-      padding: 60px 20px;
-      /* Padding for top/bottom and left/right */
-      text-align: center;
-      /* Center text */
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      /* Soft shadow for depth */
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
     }
 
-    .hero h1 {
-      font-size: 48px;
-      color: #333;
-
+    .feature-card:hover {
+      transform: translateY(-5px);
     }
 
-    .hero p {
-      font-size: 1.2em;
-      line-height: 1.5;
-      margin-bottom: 20px;
+    .feature-icon {
+      font-size: 2.5rem;
+      color: var(--secondary-color);
+      margin-bottom: 1.5rem;
     }
 
-    .hero .buttons a {
-      display: inline-block;
-      padding: 10px 20px;
-      text-decoration: none;
-      background-color: #28a745;
+    .cta-button {
+      background-color: var(--secondary-color);
       color: white;
-      margin-right: 10px;
-      border-radius: 5px;
-      transition: background-color 0.3s ease, transform 0.2s ease;
+      padding: 0.8rem 2rem;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
     }
 
-    .hero .buttons a:hover {
-      background-color: #218838;
+    .cta-button:hover {
+      background-color: var(--primary-color);
+      color: white;
       transform: translateY(-2px);
     }
 
-    .card-section {
-      display: flex;
-      justify-content: space-between;
-      padding: 50px 0;
+    .footer {
+      background-color: var(--primary-color);
+      color: var(--light-text);
+      padding: 3rem 0;
+      margin-top: 5rem;
     }
 
-    .card {
-      background-color: white;
-      width: 450px;
-      padding: 20px;
-      text-align: center;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      width: 30%;
+    .footer-title {
+      font-weight: 700;
+      margin-bottom: 1.5rem;
     }
 
-    .card svg {
-      margin-bottom: 10px;
-      color: #28a745;
-      width: 50px;
-      height: 50px;
-    }
-
-    .card h2 {
-      margin-bottom: 10px;
-      font-size: 24px;
-      color: #333;
-    }
-
-    .card p {
-      color: #666;
-      font-size: 16px;
-    }
-
-    .card a {
-      display: inline-block;
-      margin-top: 20px;
-      color: #28a745;
+    .footer-link {
+      color: var(--light-text);
       text-decoration: none;
+      transition: color 0.3s ease;
     }
 
-    .card a:hover {
-      text-decoration: underline;
+    .footer-link:hover {
+      color: var(--secondary-color);
     }
 
-    .testimonials {
-      padding: 50px 0;
-      background-color: #f1f1f1;
-      text-align: center;
+    .social-icon {
+      font-size: 1.5rem;
+      margin-right: 1rem;
+      color: var(--light-text);
+      transition: color 0.3s ease;
     }
 
-    .testimonials h1 {
-      font-size: 36px;
-      color: #333;
-      margin-bottom: 30px;
+    .social-icon:hover {
+      color: var(--secondary-color);
     }
 
-    .testimonial {
-      background-color: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      display: flex;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .testimonial svg {
-      color: #999;
-      margin-right: 15px;
-    }
-
-    .testimonial p {
-      font-size: 16px;
-      color: #666;
-    }
-
-    .documentation {
-      background-color: #f7f7f7;
-      padding: 50px 0;
-    }
-
-    .documentation h2 {
-      font-size: 36px;
-      color: #333;
-      margin-bottom: 30px;
-      text-align: center;
-    }
-
-    .documentation p {
-      font-size: 16px;
-      line-height: 1.6;
-      color: #666;
-    }
-
-    footer {
-      background-color: #28a745;
-      color: white;
-      text-align: center;
-      padding: 10px 0;
-    }
-
-    /* Media Query for responsiveness */
     @media (max-width: 768px) {
-      .hero {
-        flex-direction: column;
-        /* Stack elements vertically on small screens */
-        text-align: center;
-        /* Center text */
+      .hero-title {
+        font-size: 2.5rem;
       }
-
-      .card-section {
-        display: flex;
-        justify-content: space-between;
-        padding: 50px 0;
-      }
-
-      .card {
-        background-color: white;
-        width: 450px;
-        padding: 20px;
-        text-align: center;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 30%;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        /* Add transition */
-        margin: 0 10px;
-      }
-
-      .card:first-child {
-        margin-left: 0;
-        /* Remove left margin for the first card */
-      }
-
-      .card:last-child {
-        margin-right: 0;
-        /* Remove right margin for the last card */
-      }
-
-      .card:hover {
-        transform: translateY(-5px);
-        /* Slightly lift the card */
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        /* Enhanced shadow */
-      }
-
-      .card svg {
-        margin-bottom: 10px;
-        color: #28a745;
-        width: 50px;
-        height: 50px;
-      }
-
-      .card h2 {
-        margin-bottom: 10px;
-        font-size: 24px;
-        color: #333;
-      }
-
-      .card p {
-        color: #666;
-        font-size: 16px;
-      }
-
-      .card a {
-        display: inline-block;
-        margin-top: 20px;
-        color: #28a745;
-        text-decoration: none;
-      }
-
-      .card a:hover {
-        text-decoration: underline;
-      }
-    }
-
-    /* Basic Reset for consistency */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Arial', sans-serif;
-      background-color: #f4f4f4;
-      line-height: 1.6;
-    }
-
-    .container {
-      width: 90%;
-      max-width: 1200px;
-      margin: 20px auto;
-    }
-
-    .section-title {
-      text-align: center;
-      font-size: 2em;
-      margin-bottom: 30px;
-    }
-
-    .cards-wrapper {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-      /* Adjust card width */
-      gap: 90px;
-      /* Set gap between cards to 60px */
-    }
-
-    .card {
-      width: 550px;
-      background-color: #fff;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .card-img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-    }
-
-    .card-body {
-      padding: 20px;
-    }
-
-    .card-title {
-      font-size: 1.5em;
-      margin-bottom: 10px;
-    }
-
-    .card-text {
-      font-size: 1em;
-      color: #555;
-      line-height: 1.6;
-    }
-
-    .card p {
-      margin-bottom: 10px;
-    }
-
-    /* Responsive Design: Grid layout will automatically adjust */
-    @media (max-width: 768px) {
-      .section-title {
-        font-size: 1.5em;
-      }
-
-      .card-img {
-        height: 150px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .section-title {
-        font-size: 1.2em;
-      }
-
-      .card-img {
-        height: 120px;
+      
+      .hero-subtitle {
+        font-size: 1.1rem;
       }
     }
   </style>
 
-
-  <title>Churn Prediction</title>
+  <title>Customer Churn Predictor - Bytewise Fellowship</title>
 </head>
 
 <body>
-
-  <header>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-      <div class="logo">
-        <h1 style="text-align: center;">Churn Prediction</h1>
-      </div>
-      <nav>
-        <a href="/">Home</a>
-        <a href="/prediction">Prediction</a>
-        <a href="/analysis">Analysis</a>
-      </nav>
-    </div>
-  </header>
-
-  <section class="hero">
-    <div class="container">
-      <div style="text-align: center;">
-        <h1>Machine Learning Project</h1>
-        <p>Customer Churn Prediction using advanced machine learning techniques. Explore predictions and analysis
-          through our interactive platform.</p>
-        <div class="buttons">
-          <a href="/prediction">Prediction</a>
-          <a href="/analysis">Analysis</a>
-        </div>
-      </div>
-      <div>
-        <!-- <img src="../static/herosection.svg" alt="Churn Prediction"> -->
+      <a class="navbar-brand" href="/">
+        <i class="fas fa-chart-line me-2"></i>
+        Churn Predictor
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/prediction">Predict</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/churn">Analysis</a>
+          </li>
+        </ul>
       </div>
     </div>
-  </section>
+  </nav>
 
-  <!-- Add Documentation Section -->
-  <section class="documentation">
+  <!-- Hero Section -->
+  <section class="hero-section">
     <div class="container">
-      <h2 class="section-title">Churn Risk Prediction Project Documentation</h2>
-
-      <div class="cards-wrapper">
-        <!-- Project Overview Card -->
-        <div class="card">
-          <img
-            src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8cHJvamVjdCUyMG92ZXJ2aWV3fGVufDB8fDB8fHww"
-            class="card-img" alt="Project Overview Image">
-          <div class="card-body">
-            <h3 class="card-title">Project Overview</h3>
-            <p class="card-text">
-              This project aims to predict the churn risk of customers using machine learning techniques. The dataset
-              contains customer-related information such as demographics, transaction details, and behavior patterns,
-              which are used to estimate the likelihood of customer churn. The process involves data cleaning,
-              preprocessing, visualization, and model training using different machine learning algorithms including
-              Decision Tree, Random Forest, and an Artificial Neural Network (ANN).
-            </p>
-          </div>
+      <div class="row align-items-center">
+        <div class="col-lg-6">
+          <h1 class="hero-title">Predict Customer Churn with AI</h1>
+          <p class="hero-subtitle">
+            Leverage machine learning to identify customers at risk of churning and take proactive measures to retain them.
+          </p>
+          <a href="/prediction" class="btn cta-button">
+            Try Prediction <i class="fas fa-arrow-right ms-2"></i>
+          </a>
         </div>
-
-        <!-- Data Preprocessing Card -->
-        <div class="card">
-          <img
-            src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8ZGF0YSUyMHByb2Nzc2luZ3xlbnwwfHwwfHx8MA%3D%3D"
-            class="card-img" alt="Data Preprocessing">
-          <div class="card-body">
-            <h3 class="card-title">1. Data Preprocessing</h3>
-            <p class="card-text">
-              - Dataset Import: The data is imported from a CSV file (`train.csv`). Missing categorical values in
-              columns like `region_category` are filled with the mode, and missing numerical values in
-              `points_in_wallet` are filled with the mean.<br>
-              - Feature Engineering: Date-related features are extracted from `joining_date` and `last_visit_time`, and
-              one-hot encoding is applied to categorical columns. Outliers in `avg_transaction_value` are removed using
-              the IQR method.
-            </p>
-          </div>
-        </div>
-
-        <!-- Data Visualization Card -->
-        <div class="card">
-          <img
-            src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGRhdGElMjB2aXN1YWxpemF0aW9ufGVufDB8fDB8fHww"
-            class="card-img" alt="Data Visualization">
-          <div class="card-body">
-            <h3 class="card-title">2. Data Visualization</h3>
-            <p class="card-text">
-              - Histograms, correlation heatmaps, and boxplots were used to explore relationships and the distribution
-              of features, with a special focus on `avg_transaction_value` and its relation to `churn_risk_score`.
-            </p>
-          </div>
-        </div>
-
-        <!-- Feature Selection Card -->
-        <div class="card">
-          <img
-            src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGxpc3R8ZW58MHx8MHx8fDA%3D"
-            class="card-img" alt="Feature Selection">
-          <div class="card-body">
-            <h3 class="card-title">3. Feature Selection</h3>
-            <p class="card-text">
-              - Using an ExtraTreesRegressor, the top 20 important features for predicting churn risk were identified.
-              These features include `age`, `avg_transaction_value`, and `membership_category`.
-            </p>
-          </div>
-        </div>
-
-        <!-- Model Training Card -->
-        <div class="card">
-          <img
-            src="https://media.istockphoto.com/id/1487972668/photo/artificial-neural-network-abstract-technology-background.webp?a=1&b=1&s=612x612&w=0&k=20&c=La_mM2F9JXlUCq1zBj5LOyOh3l8CMG5kWsmylgCFgYQ="
-            class="card-img" alt="Model Training">
-          <div class="card-body">
-            <h3 class="card-title">4. Model Training</h3>
-            <p class="card-text">
-              - Three models were trained: Decision Tree, Random Forest, and an Artificial Neural Network (ANN). The
-              Random Forest model was saved as `random_forest_model.pkl` and the ANN was built using PyTorch.
-            </p>
-          </div>
-        </div>
-
-        <!-- Model Evaluation Card -->
-        <div class="card">
-          <img
-            src="https://images.unsplash.com/photo-1639754391037-98dd3cb74e09?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8ZXZhbHV0b24lMjBjaGFydHxlbnwwfHwwfHx8MA%3D%3D"
-            class="card-img" alt="Model Evaluation">
-          <div class="card-body">
-            <h3 class="card-title">5. Model Evaluation</h3>
-            <p class="card-text">
-              - Evaluation metrics were calculated for all models. Random Forest performed better than the Decision
-              Tree, and the ANN further improved the predictions.
-            </p>
-          </div>
-        </div>
-
-        <!-- Model Inference Card -->
-        <div class="card">
-          <img
-            src="https://media.istockphoto.com/id/2152007132/photo/graphic-designer-exploring-ui-ux-on-digital-tablet.webp?a=1&b=1&s=612x612&w=0&k=20&c=moRjCCZx3cm90apYrYQduY-vlLXdU3oGzhiiHTIh2zU="
-            class="card-img" alt="Model Inference">
-          <div class="card-body">
-            <h3 class="card-title">6. Model Inference</h3>
-            <p class="card-text">
-              - Both the Random Forest and ANN models were used to make predictions on unseen data.
-            </p>
-          </div>
+        <div class="col-lg-6 d-none d-lg-block">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="AI Prediction" class="img-fluid rounded shadow-lg">
         </div>
       </div>
     </div>
   </section>
 
-
-
-  <section style="display: flex;align-items: center;justify-content: center;" class="card-section container">
-    <div class="card">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-      </svg>
-      <h2>Prediction Models</h2>
-      <p>Explore how machine learning models help in predicting churn risks and improving customer retention strategies.
-      </p>
-      <a href="/prediction">Make a Prediction</a>
+  <!-- Features Section -->
+  <section class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="feature-card">
+          <i class="fas fa-brain feature-icon"></i>
+          <h3>Advanced AI</h3>
+          <p>Powered by Random Forest algorithm for accurate predictions and insights.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card">
+          <i class="fas fa-chart-bar feature-icon"></i>
+          <h3>Data-Driven</h3>
+          <p>Analyze multiple factors to identify patterns and predict customer behavior.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card">
+          <i class="fas fa-shield-alt feature-icon"></i>
+          <h3>Proactive Retention</h3>
+          <p>Take preventive measures before customers decide to leave.</p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <footer>
+  <!-- Footer -->
+  <footer class="footer">
     <div class="container">
-      <p>&copy; 2023 Churn Prediction Tool. All rights reserved.</p>
+      <div class="row">
+        <div class="col-md-4">
+          <h4 class="footer-title">Churn Predictor</h4>
+          <p>A machine learning project developed by Abu Bakar during the 100 Days of Bytewise Fellowship.</p>
+        </div>
+        <div class="col-md-4">
+          <h4 class="footer-title">Quick Links</h4>
+          <ul class="list-unstyled">
+            <li><a href="/" class="footer-link">Home</a></li>
+            <li><a href="/prediction" class="footer-link">Prediction</a></li>
+            <li><a href="/churn" class="footer-link">Analysis</a></li> 
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h4 class="footer-title">Connect</h4>
+          <a href="https://github.com/abubakarp789" class="social-icon"><i class="fab fa-github"></i></a>
+          <a href="https://www.linkedin.com/in/abubakar56/" class="social-icon"><i class="fab fa-linkedin"></i></a>
+          <a href="https://medium.com/@abubakarp789" class="social-icon"><i class="fab fa-medium"></i></a>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-12 text-center">
+          <p class="mb-0">Developed by Abu Bakar during 100 Days of Bytewise Fellowship</p>
+        </div>
+      </div>
     </div>
   </footer>
 
+  <!-- Bootstrap JS Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

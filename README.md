@@ -1,4 +1,4 @@
-# Churn Prediction
+# Customer Churn Predictor
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
@@ -6,50 +6,47 @@
 
 ## Table of Contents
 
-- [Introduction](#introduction)
-- [Project Overview](#project-overview)
-- [Technologies](#technologies)
+- [Overview](#overview)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
+- [Acknowledgements](#acknowledgements)
+- [Contact](#contact)
 
-## Introduction
+---
 
-**Customer churn** is when customers stop using a company's services. Predicting churn helps businesses retain customers by identifying at-risk individuals and addressing their concerns.
+## Overview
 
-## Project Overview
+**Customer Churn Predictor** is a professional machine learning web application developed as part of the "100 Days of Bytewise" Fellowship at Bytewise Limited. The app predicts customer churn using a trained Random Forest model and provides interactive data analysis dashboards. The project demonstrates the full ML pipeline: data processing, feature engineering, model training, evaluation, and deployment.
 
-The **Churn Prediction** project utilizes machine learning to forecast customer churn based on historical data. It includes data preprocessing, exploratory analysis, feature engineering, model training, and deployment through a Flask web application.
+---
 
-### Features
+## Features
 
-- **Data Cleaning:** Handles missing values and encodes categorical variables.
-- **Exploratory Data Analysis:** Visualizes data distributions and correlations.
-- **Model Training:** Implements Decision Tree, Random Forest, and ANN models.
-- **Deployment:** Provides a Flask web app for real-time predictions.
+- **Interactive Web App:** User-friendly Flask interface for churn prediction and data exploration.
+- **Pre-filled Sample Form:** See a sample prediction instantly, or enter your own data.
+- **Modern UI:** Responsive, Bootstrap 5-based design with professional theming.
+- **Data Analysis Dashboard:** Visualize feature importances, distributions, correlations, and more.
+- **Reproducible ML Pipeline:** Clean code for data processing, feature engineering, and model training.
+- **Experiment Tracking:** Modular code for easy experimentation and reproducibility.
 
-## Technologies
+---
 
-- **Language:** Python 3.8+
-- **Libraries:** pandas, numpy, matplotlib, seaborn, scikit-learn, torch, Flask, pickle
+## Technologies Used
 
-## Contributors ✨
+- **Python 3.8+**
+- **Flask** (Web framework)
+- **scikit-learn** (ML modeling)
+- **pandas, numpy** (Data processing)
+- **matplotlib, seaborn** (Visualization)
+- **Bootstrap 5** (Frontend styling)
+- **Jinja2** (Flask templating)
+- **pickle** (Model serialization)
 
-Thanks to these amazing people for contributing to this repository:
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tbody>
-    <tr>
-       <td align="center" valign="top" width="14.28%"><a href="https://github.com/alienx5499"><img src="https://avatars.githubusercontent.com/u/163229512?v=4" width="100px;" alt="Prabal Patra"/><br /><sub><b>Prabal Patra</b></sub></a><br /><a href="https://github.com/alienx5499" title="Code"></a></td>
-       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Nazim9945"><img src="https://avatars.githubusercontent.com/u/127049743?v=4" width="100px;" alt="Nazim Saifi"/><br /><sub><b>Nazim Saifi</b></sub></a><br /><a href="https://github.com/Nazim9945" title="Code"></a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/bala51214"><img src="https://avatars.githubusercontent.com/u/140279813?v=4" width="100px;" alt="Muhammad Bilal"/><br /><sub><b>Muhammad Bilal</b></sub></a><br /><a href="https://github.com/bala51214" title="Code"></a></td>
-    </tr>
-  </tbody>
-</table>
+---
 
 ## Installation
 
@@ -61,14 +58,13 @@ Thanks to these amazing people for contributing to this repository:
 ### Steps
 
 1. **Clone the Repository:**
-
    ```bash
-   git clone https://github.com/yourusername/Churn_Prediction.git
-   cd Churn_Prediction
+   git clone https://github.com/abubakarp789/Churn_Predictor.git
+
+   cd Churn_Predictor
    ```
 
-2. **Create and Activate Virtual Environment:**
-
+2. **Create and Activate a Virtual Environment:**
    ```bash
    python -m venv venv
    # Windows
@@ -78,77 +74,83 @@ Thanks to these amazing people for contributing to this repository:
    ```
 
 3. **Install Dependencies:**
-
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Prepare Dataset:**
+4. **Prepare Data and Model:**
+   - Place your dataset files (e.g., `train.csv`, `test.csv`) in the `dataset/` folder.
+   - Ensure `random_forest_model.pkl` is present in the project root (or retrain using the notebook).
 
-   Place `train.csv` and `test.csv` in the `dataset/` folder.
-
-5. **Train Models (Optional):**
-
-   Run the notebook in `notebooks/Churn_Prediction.ipynb` to train and save models.
+---
 
 ## Usage
 
 ### Running the Flask App
 
-1. **Navigate to App Directory:**
-
-   ```bash
-   cd app
-   ```
-
-2. **Ensure Model is Present:**
-
-   Verify `models/random_forest_model.pkl` exists.
-
-3. **Start the App:**
-
+1. **Start the App:**
    ```bash
    python app.py
    ```
 
-4. **Access the Application:**
+2. **Access the Application:**
+   Open [http://127.0.0.1:10000/](http://127.0.0.1:10000/) in your browser.
 
-   Open [http://127.0.0.1:5000/](http://127.0.0.1:5000/) in your browser.
+### Web Application Pages
 
-### Using the API
+- **Home:** Project overview and navigation.
+- **Predict:** Fill (or sample) form to get churn prediction.
+- **Analysis:** Interactive dashboard with data visualizations.
 
-Send a POST request to `http://127.0.0.1:5000/predict` with the required data to receive churn predictions.
+### API Usage
+
+Send a POST request to `/prediction` with the required fields to get a churn prediction (see form fields in `prediction.html`).
+
+---
+
+## Project Organization
+
+- **Data:** All raw and processed data in `dataset/`.
+- **Preprocessing & Feature Engineering:** In Jupyter notebooks and modular Python scripts.
+- **Model Training:** Notebooks and scripts, with model saved as `random_forest_model.pkl`.
+- **Web App:** Flask app in `app.py`, templates in `templates/`, static plots in `plots/`.
+- **Experiment Tracking:** Use notebooks and version control for reproducibility.
+
+---
 
 ## Contributing
 
-Contributions are welcome! Follow these steps:
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-1. **Fork the Repository**
-2. **Clone Your Fork:**
-
-   ```bash
-   git clone https://github.com/yourusername/Churn_Prediction.git
-   cd Churn_Prediction
-   ```
-
-3. **Create a Branch:**
-
-   ```bash
-   git checkout -b feature/YourFeature
-   ```
-
-4. **Commit Changes:**
-
-   ```bash
-   git commit -m "Description of your feature"
-   ```
-
-5. **Push and Create Pull Request:**
-
-   ```bash
-   git push origin feature/YourFeature
-   ```
+---
 
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
+---
+
+## Acknowledgements
+
+- Developed as part of the **100 Days of Bytewise** Machine Learning Fellowship at Bytewise Limited.
+- Thank you to Bytewise Limited for this fantastic opportunity. Special thanks to our track Lead **Nimra Waqar** and colleagues for their unwavering support.
+
+---
+## Contact
+
+For questions, suggestions, or collaboration opportunities, feel free to reach out:
+
+- **Email:** abubakarp789@gmail.com
+- **GitHub:** [abubakarp789](https://github.com/abubakarp789)
+- **LinkedIn:** [Abu Bakar](https://www.linkedin.com/in/abubakar56/)
+- **Medium:** [@abubakarp789](https://medium.com/@abubakarp789)
+
+I'm always open to discussing machine learning, data science, and potential collaborations!
+
+---
+
+**Developed by Abu Bakar during 100 Days of Bytewise Fellowship**
+
+---
+
+
