@@ -3,9 +3,16 @@ from flask import Flask, request, render_template, send_from_directory
 import numpy as np
 import pandas as pd
 import pickle
-model = pickle.load(open('random_forest_model.pkl', 'rb'))
 import os
 
+MODEL_PATH = 'random_forest_model.pkl'
+MODEL_DRIVE_URL = 'https://drive.google.com/uc?id=1mvIWEttclH_8HRElFP2zJbuT_vS0t1kx'
+
+def download_model():
+    if not os.path.exists(MODEL_PATH):
+        import gdown
+        print('Downloading model from Google Drive...')
+        gdown.download(MODEL_DRIVE_URL, MODEL_PATH, quiet=False)
 
 app = Flask(__name__)
 
@@ -298,4 +305,6 @@ def plots(filename):
     return send_from_directory('plots', filename)
 
 if __name__ == "__main__":
+    download_model()
+    model = pickle.load(open(MODEL_PATH, 'rb'))
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 10000)))
