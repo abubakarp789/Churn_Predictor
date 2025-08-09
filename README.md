@@ -39,8 +39,11 @@ The **Churn Prediction** project utilizes machine learning to forecast customer 
 Thanks to these amazing people for contributing to this repository:
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+
 <!-- prettier-ignore-start -->
+
 <!-- markdownlint-disable -->
+
 <table>
   <tbody>
     <tr>
@@ -63,10 +66,9 @@ Thanks to these amazing people for contributing to this repository:
 1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/yourusername/Churn_Prediction.git
+   git clone https://github.com/abubakarp789/Churn_Prediction.git
    cd Churn_Prediction
    ```
-
 2. **Create and Activate Virtual Environment:**
 
    ```bash
@@ -76,17 +78,14 @@ Thanks to these amazing people for contributing to this repository:
    # macOS/Linux
    source venv/bin/activate
    ```
-
 3. **Install Dependencies:**
 
    ```bash
    pip install -r requirements.txt
    ```
-
 4. **Prepare Dataset:**
 
    Place `train.csv` and `test.csv` in the `dataset/` folder.
-
 5. **Train Models (Optional):**
 
    Run the notebook in `notebooks/Churn_Prediction.ipynb` to train and save models.
@@ -100,17 +99,14 @@ Thanks to these amazing people for contributing to this repository:
    ```bash
    cd app
    ```
-
 2. **Ensure Model is Present:**
 
    Verify `models/random_forest_model.pkl` exists.
-
 3. **Start the App:**
 
    ```bash
    python app.py
    ```
-
 4. **Access the Application:**
 
    Open [http://127.0.0.1:5000/](http://127.0.0.1:5000/) in your browser.
@@ -130,19 +126,16 @@ Contributions are welcome! Follow these steps:
    git clone https://github.com/yourusername/Churn_Prediction.git
    cd Churn_Prediction
    ```
-
 3. **Create a Branch:**
 
    ```bash
    git checkout -b feature/YourFeature
    ```
-
 4. **Commit Changes:**
 
    ```bash
    git commit -m "Description of your feature"
    ```
-
 5. **Push and Create Pull Request:**
 
    ```bash
