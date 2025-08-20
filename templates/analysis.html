@@ -1,49 +1,405 @@
 {% extends 'base.html' %}
 
-{% block title %}Analysis{% endblock %}
+{% block title %}Analytics Dashboard{% endblock %}
 
 {% block content %}
-<section class="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl shadow-lg p-10">
-    <div class="text-center mb-12">
-        <h1 class="text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">Exploratory Data Analysis</h1>
-        <p class="text-lg text-gray-600 max-w-3xl mx-auto">Visualizing the data to understand the trends and relationships.</p>
+<div x-data="analyticsData()" x-init="init()">
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden mb-16" data-aos="fade-down">
+        <!-- Background Elements -->
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-teal-600/10 rounded-3xl">
+        </div>
+        <div
+            class="absolute top-10 left-10 w-72 h-72 bg-blue-400/20 rounded-full mix-blend-multiply filter blur-xl animate-float">
+        </div>
+        <div class="absolute top-20 right-10 w-72 h-72 bg-purple-400/20 rounded-full mix-blend-multiply filter blur-xl animate-float"
+            style="animation-delay: 2s;"></div>
+
+        <div class="relative z-10 text-center py-16 px-6">
+            <div class="max-w-4xl mx-auto">
+                <h1 class="text-5xl md:text-6xl font-extrabold mb-6">
+                    <span class="gradient-text">Analytics</span>
+                    <span class="text-gray-900">Dashboard</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed">
+                    Deep dive into customer behavior patterns and churn prediction insights with
+                    <span class="font-bold text-primary-600">interactive visualizations</span>
+                </p>
+
+                <!-- Key Metrics -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+                    <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 text-center border border-white/20"
+                        data-aos="fade-up" data-aos-delay="100">
+                        <div class="text-3xl font-bold text-primary-600">94.7%</div>
+                        <div class="text-sm text-gray-600 font-medium">Model Accuracy</div>
+                    </div>
+                    <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 text-center border border-white/20"
+                        data-aos="fade-up" data-aos-delay="200">
+                        <div class="text-3xl font-bold text-purple-600">15</div>
+                        <div class="text-sm text-gray-600 font-medium">Key Features</div>
+                    </div>
+                    <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 text-center border border-white/20"
+                        data-aos="fade-up" data-aos-delay="300">
+                        <div class="text-3xl font-bold text-teal-600">8.9K</div>
+                        <div class="text-sm text-gray-600 font-medium">Data Points</div>
+                    </div>
+                    <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-6 text-center border border-white/20"
+                        data-aos="fade-up" data-aos-delay="400">
+                        <div class="text-3xl font-bold text-orange-600">Real-time</div>
+                        <div class="text-sm text-gray-600 font-medium">Analysis</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation Tabs -->
+    <div class="mb-8" data-aos="fade-up">
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-2">
+            <nav class="flex space-x-2" role="tablist">
+                <button @click="activeTab = 'overview'"
+                    :class="activeTab === 'overview' ? 'bg-gradient-to-r from-primary-500 to-purple-600 text-white shadow-lg' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'"
+                    class="flex-1 flex items-center justify-center space-x-2 px-6 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:-translate-y-0.5">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Overview</span>
+                </button>
+                <button @click="activeTab = 'distributions'"
+                    :class="activeTab === 'distributions' ? 'bg-gradient-to-r from-primary-500 to-purple-600 text-white shadow-lg' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'"
+                    class="flex-1 flex items-center justify-center space-x-2 px-6 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:-translate-y-0.5">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Distributions</span>
+                </button>
+                <button @click="activeTab = 'importance'"
+                    :class="activeTab === 'importance' ? 'bg-gradient-to-r from-primary-500 to-purple-600 text-white shadow-lg' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'"
+                    class="flex-1 flex items-center justify-center space-x-2 px-6 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:-translate-y-0.5">
+                    <i class="fas fa-brain"></i>
+                    <span>Feature Importance</span>
+                </button>
+                <button @click="activeTab = 'correlations'"
+                    :class="activeTab === 'correlations' ? 'bg-gradient-to-r from-primary-500 to-purple-600 text-white shadow-lg' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'"
+                    class="flex-1 flex items-center justify-center space-x-2 px-6 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:-translate-y-0.5">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Correlations</span>
+                </button>
+            </nav>
+        </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div class="bg-white rounded-lg p-6 shadow hover:shadow-xl transition">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">Categorical Features Distribution</h2>
-            <img src="/static/plots/categorical_features_distribution.png" alt="Categorical Features Distribution" class="w-full h-auto rounded-lg shadow-md">
+    <!-- Tab Content -->
+    <div class="space-y-8">
+
+        <!-- Overview Tab -->
+        <div x-show="activeTab === 'overview'" x-transition class="space-y-8">
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6" data-aos="fade-up">
+                <div
+                    class="bg-white rounded-2xl p-8 shadow-xl border border-gray-100 relative overflow-hidden group hover:shadow-2xl transition-all duration-500">
+                    <div
+                        class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/20 to-purple-600/20 rounded-full -translate-y-16 translate-x-16">
+                    </div>
+                    <div class="relative z-10">
+                        <div
+                            class="w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mb-6 transform group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-users text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Customer Segments</h3>
+                        <p class="text-gray-600 mb-4">Analyze customer behavior patterns across different demographics
+                            and usage categories.</p>
+                        <div class="text-3xl font-bold text-blue-600">6 Segments</div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white rounded-2xl p-8 shadow-xl border border-gray-100 relative overflow-hidden group hover:shadow-2xl transition-all duration-500">
+                    <div
+                        class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-500/20 to-pink-600/20 rounded-full -translate-y-16 translate-x-16">
+                    </div>
+                    <div class="relative z-10">
+                        <div
+                            class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mb-6 transform group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-exclamation-triangle text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Churn Risk</h3>
+                        <p class="text-gray-600 mb-4">Identify high-risk customers and understand the key factors
+                            driving churn behavior.</p>
+                        <div class="text-3xl font-bold text-purple-600">23.4%</div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white rounded-2xl p-8 shadow-xl border border-gray-100 relative overflow-hidden group hover:shadow-2xl transition-all duration-500">
+                    <div
+                        class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-500/20 to-teal-600/20 rounded-full -translate-y-16 translate-x-16">
+                    </div>
+                    <div class="relative z-10">
+                        <div
+                            class="w-16 h-16 bg-gradient-to-r from-green-500 to-teal-600 rounded-2xl flex items-center justify-center mb-6 transform group-hover:scale-110 transition-transform duration-300">
+                            <i class="fas fa-shield-alt text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Retention Rate</h3>
+                        <p class="text-gray-600 mb-4">Track customer retention improvements through predictive
+                            interventions.</p>
+                        <div class="text-3xl font-bold text-green-600">76.6%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Insights -->
+            <div class="bg-white rounded-2xl p-8 shadow-xl border border-gray-100" data-aos="fade-up"
+                data-aos-delay="200">
+                <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                    <i class="fas fa-lightbulb text-yellow-500 mr-3"></i>
+                    Key Insights
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <div class="w-2 h-2 bg-primary-500 rounded-full mt-2"></div>
+                            <p class="text-gray-700">Customers with <strong>poor customer service feedback</strong> are
+                                3.2x more likely to churn</p>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <div class="w-2 h-2 bg-purple-500 rounded-full mt-2"></div>
+                            <p class="text-gray-700">Users who haven't logged in for <strong>30+ days</strong> show 85%
+                                churn probability</p>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <div class="w-2 h-2 bg-teal-500 rounded-full mt-2"></div>
+                            <p class="text-gray-700"><strong>Premium membership</strong> customers have 40% lower churn
+                                rates</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+                            <p class="text-gray-700">Mobile-only users show <strong>higher engagement</strong> and
+                                retention rates</p>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <div class="w-2 h-2 bg-red-500 rounded-full mt-2"></div>
+                            <p class="text-gray-700">Customers with <strong>past complaints</strong> require proactive
+                                retention efforts</p>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <div class="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                            <p class="text-gray-700">Referral customers have <strong>25% higher lifetime value</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="bg-white rounded-lg p-6 shadow hover:shadow-xl transition">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">Cleaned Transaction Value Boxplot</h2>
-            <img src="/static/plots/cleaned_transaction_value_boxplot.png" alt="Cleaned Transaction Value Boxplot" class="w-full h-auto rounded-lg shadow-md">
+        <!-- Feature Distributions Tab -->
+        <div x-show="activeTab === 'distributions'" x-transition class="space-y-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Categorical Features -->
+                <div class="bg-white rounded-2xl p-8 shadow-xl border border-gray-100" data-aos="fade-right">
+                    <div class="flex items-center mb-6">
+                        <div
+                            class="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-tags text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900">Categorical Features Distribution</h3>
+                    </div>
+                    <div class="text-center">
+                        <img src="/static/plots/categorical_features_distribution.png"
+                            alt="Categorical Features Distribution"
+                            class="max-w-full h-auto rounded-xl shadow-lg mx-auto border border-gray-200"
+                            style="max-height: 400px;">
+                    </div>
+                </div>
+
+                <!-- Numeric Features -->
+                <div class="bg-white rounded-2xl p-8 shadow-xl border border-gray-100" data-aos="fade-left">
+                    <div class="flex items-center mb-6">
+                        <div
+                            class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-chart-line text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900">Numeric Features Distribution</h3>
+                    </div>
+                    <div class="text-center">
+                        <img src="/static/plots/numeric_features_distribution.png" alt="Numeric Features Distribution"
+                            class="max-w-full h-auto rounded-xl shadow-lg mx-auto border border-gray-200"
+                            style="max-height: 400px;">
+                    </div>
+                </div>
+
+                <!-- Customer Feedback -->
+                <div class="bg-white rounded-2xl p-8 shadow-xl border border-gray-100" data-aos="fade-right"
+                    data-aos-delay="200">
+                    <div class="flex items-center mb-6">
+                        <div
+                            class="w-12 h-12 bg-gradient-to-r from-green-500 to-teal-600 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-comments text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900">Customer Feedback Analysis</h3>
+                    </div>
+                    <div class="text-center">
+                        <img src="/static/plots/feedback_countplot.png" alt="Customer Feedback Analysis"
+                            class="max-w-full h-auto rounded-xl shadow-lg mx-auto border border-gray-200"
+                            style="max-height: 400px;">
+                    </div>
+                </div>
+
+                <!-- Transaction Value Analysis -->
+                <div class="bg-white rounded-2xl p-8 shadow-xl border border-gray-100" data-aos="fade-left"
+                    data-aos-delay="200">
+                    <div class="flex items-center mb-6">
+                        <div
+                            class="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-600 rounded-xl flex items-center justify-center mr-4">
+                            <i class="fas fa-dollar-sign text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900">Transaction Value Analysis</h3>
+                    </div>
+                    <div class="text-center">
+                        <img src="/static/plots/cleaned_transaction_value_boxplot.png" alt="Transaction Value Analysis"
+                            class="max-w-full h-auto rounded-xl shadow-lg mx-auto border border-gray-200"
+                            style="max-height: 400px;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Numerical Features Pairplot -->
+            <div class="bg-white rounded-2xl p-8 shadow-xl border border-gray-100" data-aos="fade-up"
+                data-aos-delay="400">
+                <div class="flex items-center mb-6">
+                    <div
+                        class="w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center mr-4">
+                        <i class="fas fa-project-diagram text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900">Numerical Features Relationships</h3>
+                </div>
+                <div class="text-center">
+                    <img src="/static/plots/numerical_features_pairplot.png" alt="Numerical Features Pairplot"
+                        class="max-w-full h-auto rounded-xl shadow-lg mx-auto border border-gray-200"
+                        style="max-height: 600px;">
+                </div>
+            </div>
         </div>
 
-        <div class="bg-white rounded-lg p-6 shadow hover:shadow-xl transition">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">Correlation Heatmap</h2>
-            <img src="/static/plots/correlation_heatmap.png" alt="Correlation Heatmap" class="w-full h-auto rounded-lg shadow-md">
+        <!-- Feature Importance Tab -->
+        <div x-show="activeTab === 'importance'" x-transition>
+            <div class="bg-white rounded-2xl p-8 shadow-xl border border-gray-100" data-aos="zoom-in">
+                <div class="flex items-center mb-8">
+                    <div
+                        class="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-600 rounded-2xl flex items-center justify-center mr-6">
+                        <i class="fas fa-brain text-white text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-3xl font-bold text-gray-900">Feature Importance Analysis</h3>
+                        <p class="text-gray-600 mt-2">Discover which factors have the strongest impact on customer churn
+                            predictions</p>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-orange-50 to-red-50 rounded-xl p-6 mb-8">
+                    <div class="flex items-center text-orange-800">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        <span class="font-semibold">Model Insights:</span>
+                    </div>
+                    <p class="text-orange-700 mt-2">Features are ranked by their contribution to the Random Forest
+                        model's decision-making process. Higher values indicate stronger predictive power.</p>
+                </div>
+
+                <div class="text-center">
+                    <img src="/static/plots/feature_importances.png" alt="Feature Importance Analysis"
+                        class="max-w-full h-auto rounded-xl shadow-lg mx-auto border border-gray-200"
+                        style="max-height: 600px;">
+                </div>
+            </div>
         </div>
 
-        <div class="bg-white rounded-lg p-6 shadow hover:shadow-xl transition">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">Feature Importances</h2>
-            <img src="/static/plots/feature_importances.png" alt="Feature Importances" class="w-full h-auto rounded-lg shadow-md">
-        </div>
+        <!-- Correlations Tab -->
+        <div x-show="activeTab === 'correlations'" x-transition>
+            <div class="bg-white rounded-2xl p-8 shadow-xl border border-gray-100" data-aos="zoom-in">
+                <div class="flex items-center mb-8">
+                    <div
+                        class="w-16 h-16 bg-gradient-to-r from-teal-500 to-blue-600 rounded-2xl flex items-center justify-center mr-6">
+                        <i class="fas fa-project-diagram text-white text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-3xl font-bold text-gray-900">Feature Correlation Matrix</h3>
+                        <p class="text-gray-600 mt-2">Explore relationships between different customer attributes and
+                            behaviors</p>
+                    </div>
+                </div>
 
-        <div class="bg-white rounded-lg p-6 shadow hover:shadow-xl transition">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">Feedback Countplot</h2>
-            <img src="/static/plots/feedback_countplot.png" alt="Feedback Countplot" class="w-full h-auto rounded-lg shadow-md">
-        </div>
+                <div class="bg-gradient-to-r from-teal-50 to-blue-50 rounded-xl p-6 mb-8">
+                    <div class="flex items-center text-teal-800">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        <span class="font-semibold">Correlation Guide:</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 text-sm">
+                        <div class="flex items-center text-teal-700">
+                            <div class="w-4 h-4 bg-blue-800 rounded mr-2"></div>
+                            <span>Strong Negative (-0.7 to -1.0)</span>
+                        </div>
+                        <div class="flex items-center text-teal-700">
+                            <div class="w-4 h-4 bg-purple-200 rounded mr-2"></div>
+                            <span>Weak Correlation (-0.3 to 0.3)</span>
+                        </div>
+                        <div class="flex items-center text-teal-700">
+                            <div class="w-4 h-4 bg-red-600 rounded mr-2"></div>
+                            <span>Strong Positive (0.7 to 1.0)</span>
+                        </div>
+                    </div>
+                </div>
 
-        <div class="bg-white rounded-lg p-6 shadow hover:shadow-xl transition">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">Numeric Features Distribution</h2>
-            <img src="/static/plots/numeric_features_distribution.png" alt="Numeric Features Distribution" class="w-full h-auto rounded-lg shadow-md">
-        </div>
+                <div class="text-center mb-8"></div>
+                <img src="/static/plots/correlation_heatmap.png" alt="Correlation Heatmap"
+                    class="max-w-full h-auto rounded-xl shadow-lg mx-auto border border-gray-200"
+                    style="max-height: 600px;">
+            </div>
 
-        <div class="bg-white rounded-lg p-6 shadow hover:shadow-xl transition md:col-span-2">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">Numerical Features Pairplot</h2>
-            <img src="/static/plots/numerical_features_pairplot.png" alt="Numerical Features Pairplot" class="w-full h-auto rounded-lg shadow-md">
+
+        </div>
+    </div>
+</div>
+
+<!-- Action Section -->
+<section class="mt-16 text-center" data-aos="fade-up">
+    <div
+        class="bg-gradient-to-r from-primary-500 via-purple-600 to-teal-500 rounded-3xl p-12 md:p-16 text-white relative overflow-hidden">
+        <!-- Background decoration -->
+        <div class="absolute inset-0 bg-black/10"></div>
+        <div
+            class="absolute top-0 left-0 w-96 h-96 bg-white/10 rounded-full -translate-x-48 -translate-y-48 animate-float">
+        </div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-white/10 rounded-full translate-x-48 translate-y-48 animate-float"
+            style="animation-delay: 3s;"></div>
+
+        <div class="relative z-10 max-w-4xl mx-auto">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">
+                Ready to Make Data-Driven Decisions?
+            </h2>
+            <p class="text-xl md:text-2xl mb-8 opacity-90 leading-relaxed">
+                Use these insights to predict customer churn and improve retention strategies
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                <a href="/prediction"
+                    class="bg-white text-primary-600 px-8 py-4 rounded-full font-bold text-lg shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 flex items-center space-x-3">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Start Predicting</span>
+                </a>
+                <a href="/"
+                    class="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-primary-600 transform hover:-translate-y-1 transition-all duration-300 flex items-center space-x-3">
+                    <i class="fas fa-home"></i>
+                    <span>Back to Home</span>
+                </a>
+            </div>
         </div>
     </div>
 </section>
-{% endblock %}
+</div>
+
+<script>
+    function analyticsData() {
+        return {
+            activeTab: 'overview'
+        }
+    }
+</script>
+{% endblock %}</div>

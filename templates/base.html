@@ -1,51 +1,449 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}{% endblock %} | Churn Predictor</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    body { font-family: 'Inter', sans-serif; }
-  </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} | Churn Predictor AI</title>
+
+    <!-- Modern CSS Framework -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e'
+                        },
+                        secondary: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a'
+                        },
+                        success: {
+                            50: '#ecfdf5',
+                            500: '#10b981',
+                            600: '#059669'
+                        },
+                        warning: {
+                            50: '#fffbeb',
+                            500: '#f59e0b',
+                            600: '#d97706'
+                        },
+                        danger: {
+                            50: '#fef2f2',
+                            500: '#ef4444',
+                            600: '#dc2626'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'slide-down': 'slideDown 0.3s ease-out',
+                        'bounce-slow': 'bounce 2s infinite',
+                        'pulse-slow': 'pulse 3s infinite',
+                        'gradient': 'gradient 15s ease infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        },
+                        slideDown: {
+                            '0%': { transform: 'translateY(-10px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        },
+                        gradient: {
+                            '0%, 100%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' }
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 5px #0ea5e9, 0 0 10px #0ea5e9, 0 0 15px #0ea5e9' },
+                            '100%': { boxShadow: '0 0 10px #0ea5e9, 0 0 20px #0ea5e9, 0 0 30px #0ea5e9' }
+                        }
+                    },
+                    backgroundSize: {
+                        '300%': '300%'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+    <!-- Alpine.js for reactive components -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- AOS (Animate On Scroll) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Particles.js for background effects -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #0ea5e9;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0284c7;
+        }
+
+        /* Glass morphism effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(45deg, #0ea5e9, #8b5cf6, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 300%;
+            animation: gradient 3s ease infinite;
+        }
+
+        /* Custom button styles */
+        .btn-glow {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .btn-glow:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-glow:hover:before {
+            left: 100%;
+        }
+
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, .3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Particles container */
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+    </style>
 </head>
-<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen flex flex-col">
 
-  <!-- Navbar -->
-  <header class="bg-white shadow-lg sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-      <a href="/" class="text-2xl font-bold text-indigo-600 tracking-tight hover:text-indigo-800 transition-colors">
-        <span class="inline-flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 1.343-3 3v1H8a4 4 0 110-8h1.172a4 4 0 013.656 2.344M15 12h1a4 4 0 110 8h-1.172a4 4 0 01-3.656-2.344"/></svg>
-          Churn Predictor
-        </span>
-      </a>
-      <nav class="space-x-6">
-        <a href="/" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Home</a>
-        <a href="/prediction" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Prediction</a>
-        <a href="/analysis" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Analysis</a>
-      </nav>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100" x-data="{ 
+    mobileMenuOpen: false,
+    loading: false
+}">
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+
+    <!-- Loading Overlay -->
+    <div x-show="loading" x-transition
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="rounded-lg p-8 text-center bg-white text-gray-600">
+            <div class="loading mx-auto mb-4"></div>
+            <p>Processing your request...</p>
+        </div>
     </div>
-  </header>
 
-  <!-- Main content -->
-  <main class="flex-grow">
-    <div class="max-w-7xl mx-auto px-6 py-10">
-      {% block content %}{% endblock %}
-    </div>
-  </main>
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-40 backdrop-blur-lg border-b bg-white/80 border-gray-200/50" x-data="{ scrolled: false }"
+        @scroll.window="scrolled = window.scrollY > 20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="/" class="flex items-center space-x-3 group">
+                        <div class="relative">
+                            <div
+                                class="w-10 h-10 bg-gradient-to-r from-primary-500 to-purple-600 rounded-lg flex items-center justify-center transform group-hover:scale-110 transition-transform duration-200">
+                                <i class="fas fa-brain text-white text-lg"></i>
+                            </div>
+                            <div
+                                class="absolute -inset-1 bg-gradient-to-r from-primary-500 to-purple-600 rounded-lg blur opacity-25 group-hover:opacity-100 transition duration-200">
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-xl font-bold gradient-text">Churn Predictor</span>
+                        </div>
+                    </a>
+                </div>
 
-  <!-- Footer -->
-  <footer class="bg-indigo-700 text-white py-6 mt-12">
-    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-      <p class="text-sm">&copy; {{ now.year }} Churn Predictor. All rights reserved.</p>
-      <div class="space-x-4">
-        <a href="#" class="hover:text-indigo-200">Privacy Policy</a>
-        <a href="#" class="hover:text-indigo-200">Terms</a>
-      </div>
-    </div>
-  </footer>
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/"
+                        class="nav-link group relative px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary-600 transition-colors">
+                        <i class="fas fa-home mr-2"></i>Home
+                        <span
+                            class="absolute inset-x-0 bottom-0 h-0.5 bg-primary-500 transform scale-x-0 group-hover:scale-x-100 transition-transform"></span>
+                    </a>
+                    <a href="/prediction"
+                        class="nav-link group relative px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary-600 transition-colors">
+                        <i class="fas fa-chart-line mr-2"></i>Predict
+                        <span
+                            class="absolute inset-x-0 bottom-0 h-0.5 bg-primary-500 transform scale-x-0 group-hover:scale-x-100 transition-transform"></span>
+                    </a>
+                    <a href="/analysis"
+                        class="nav-link group relative px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary-600 transition-colors">
+                        <i class="fas fa-chart-bar mr-2"></i>Analytics
+                        <span
+                            class="absolute inset-x-0 bottom-0 h-0.5 bg-primary-500 transform scale-x-0 group-hover:scale-x-100 transition-transform"></span>
+                    </a>
+                </div>
 
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button @click="mobileMenuOpen = !mobileMenuOpen"
+                        class="p-2 rounded-md text-gray-700 hover:text-primary-600 hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500">
+                        <i class="fas fa-bars" x-show="!mobileMenuOpen"></i>
+                        <i class="fas fa-times" x-show="mobileMenuOpen"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation -->
+            <div x-show="mobileMenuOpen" x-transition class="md:hidden py-4 border-t border-gray-200">
+                <div class="space-y-2">
+                    <a href="/"
+                        class="block px-3 py-2 rounded-md text-gray-700 hover:text-primary-600 hover:bg-gray-50 transition-colors">
+                        <i class="fas fa-home mr-2"></i>Home
+                    </a>
+                    <a href="/prediction"
+                        class="block px-3 py-2 rounded-md text-gray-700 hover:text-primary-600 hover:bg-gray-50 transition-colors">
+                        <i class="fas fa-chart-line mr-2"></i>Predict
+                    </a>
+                    <a href="/analysis"
+                        class="block px-3 py-2 rounded-md text-gray-700 hover:text-primary-600 hover:bg-gray-50 transition-colors">
+                        <i class="fas fa-chart-bar mr-2"></i>Analytics
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-20 bg-gray-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Company Info -->
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-2">
+                        <div
+                            class="w-8 h-8 bg-gradient-to-r from-primary-500 to-purple-600 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-brain text-white text-sm"></i>
+                        </div>
+                        <span class="text-lg font-bold">Churn Predictor</span>
+                    </div>
+                    <p class="text-gray-400 text-sm">Advanced machine learning for customer retention insights.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-sm font-semibold uppercase tracking-wider mb-4">Quick Links</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="/" class="text-gray-400 hover:text-white transition-colors">Home</a></li>
+                        <li><a href="/prediction"
+                                class="text-gray-400 hover:text-white transition-colors">Prediction</a></li>
+                        <li><a href="/analysis" class="text-gray-400 hover:text-white transition-colors">Analytics</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Features -->
+                <div>
+                    <h3 class="text-sm font-semibold uppercase tracking-wider mb-4">Features</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li class="text-gray-400">Real-time Predictions</li>
+                        <li class="text-gray-400">Data Visualization</li>
+                        <li class="text-gray-400">ML Model Insights</li>
+                        <li class="text-gray-400">Customer Analytics</li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h3 class="text-sm font-semibold uppercase tracking-wider mb-4">Technology</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li class="text-gray-400">Python & Flask</li>
+                        <li class="text-gray-400">Random Forest ML</li>
+                        <li class="text-gray-400">Modern Web UI</li>
+                        <li class="text-gray-400">Real-time Analytics</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-8 mt-8 text-center">
+                <p class="text-gray-400 text-sm">
+                    © {{ now.year }} ChurnPredictor AI. All rights reserved. Built with ❤️ by Abu Bakar.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+
+
+    <script>
+        // Initialize particles
+        function initParticles() {
+            if (window.particlesJS) {
+                particlesJS('particles-js', {
+                    particles: {
+                        number: { value: 50, density: { enable: true, value_area: 800 } },
+                        color: { value: "#0ea5e9" },
+                        shape: { type: "circle" },
+                        opacity: { value: 0.1, random: false },
+                        size: { value: 3, random: true },
+                        line_linked: {
+                            enable: true,
+                            distance: 150,
+                            color: "#0ea5e9",
+                            opacity: 0.1,
+                            width: 1
+                        },
+                        move: {
+                            enable: true,
+                            speed: 1,
+                            direction: "none",
+                            random: false,
+                            straight: false,
+                            out_mode: "out",
+                            bounce: false
+                        }
+                    },
+                    interactivity: {
+                        detect_on: "canvas",
+                        events: {
+                            onhover: { enable: true, mode: "repulse" },
+                            onclick: { enable: true, mode: "push" },
+                            resize: true
+                        },
+                        modes: {
+                            grab: { distance: 400, line_linked: { opacity: 1 } },
+                            bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 },
+                            repulse: { distance: 100, duration: 0.4 },
+                            push: { particles_nb: 4 },
+                            remove: { particles_nb: 2 }
+                        }
+                    },
+                    retina_detect: true
+                });
+            }
+        }
+
+        // Initialize particles on load
+        initParticles();
+
+        // Initialize AOS
+        if (window.AOS) {
+            AOS.init({
+                duration: 1000,
+                once: true,
+                offset: 100
+            });
+        }
+
+
+    </script>
 </body>
+
 </html>

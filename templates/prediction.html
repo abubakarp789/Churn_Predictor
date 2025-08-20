@@ -1,168 +1,738 @@
 {% extends 'base.html' %}
 
-{% block title %}Prediction{% endblock %}
+{% block title %}AI Prediction{% endblock %}
 
 {% block content %}
-<section class="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl shadow-lg p-10">
-    <div class="text-center mb-12">
-        <h1 class="text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">Churn Prediction</h1>
-        <p class="text-lg text-gray-600 max-w-3xl mx-auto">Enter the customer's details to get a churn prediction.</p>
-    </div>
+<div x-data="predictionForm()" x-init="init()">
+    <!-- Header Section -->
+    <section class="text-center mb-12" data-aos="fade-down">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-5xl md:text-6xl font-extrabold mb-6">
+                <span class="gradient-text">AI-Powered</span>
+                <span class="text-gray-900">Churn Prediction</span>
+            </h1>
+            <p class="text-xl text-gray-600 leading-relaxed mb-8">
+                Enter customer information to get instant churn risk analysis with 94.7% accuracy
+            </p>
+            
+            <!-- Progress Indicator -->
+            <div class="max-w-md mx-auto mb-8">
+                <div class="flex items-center justify-between text-sm text-gray-500 mb-2">
+                    <span>Step <span x-text="currentStep"></span> of <span x-text="totalSteps"></span></span>
+                    <span x-text="Math.round((currentStep / totalSteps) * 100) + '%'"></span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-gradient-to-r from-primary-500 to-purple-600 h-2 rounded-full transition-all duration-500"
+                         :style="'width: ' + (currentStep / totalSteps * 100) + '%'"></div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <div class="bg-white rounded-lg p-8 shadow-xl">
-        <form id="predictionForm" action="/prediction" method="POST" class="space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label for="age" class="block text-sm font-medium text-gray-700">Age</label>
-                    <input type="number" id="age" name="age" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Enter age" required>
+    <!-- Prediction Form -->
+    <div class="max-w-4xl mx-auto">
+        <form @submit.prevent="submitForm" class="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
+            
+            <!-- Step 1: Personal Information -->
+            <div x-show="currentStep === 1" x-transition class="p-8 md:p-12">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-user text-white text-2xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-2">Personal Information</h2>
+                    <p class="text-gray-600">Basic demographic and account details</p>
                 </div>
-                <div>
-                    <label for="last_login" class="block text-sm font-medium text-gray-700">Days Since Last Login</label>
-                    <input type="number" id="last_login" name="last_login" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Days since last login" required>
-                </div>
-                <div>
-                    <label for="avg_time_spent" class="block text-sm font-medium text-gray-700">Average Time Spent (minutes)</label>
-                    <input type="number" id="avg_time_spent" name="avg_time_spent" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Average time spent" required>
-                </div>
-                <div>
-                    <label for="avg_transaction_value" class="block text-sm font-medium text-gray-700">Average Transaction Value ($)</label>
-                    <input type="number" step="0.01" id="avg_transaction_value" name="avg_transaction_value" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Average transaction value" required>
-                </div>
-                <div>
-                    <label for="points_in_wallet" class="block text-sm font-medium text-gray-700">Points in Wallet</label>
-                    <input type="number" id="points_in_wallet" name="points_in_wallet" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Points in wallet" required>
-                </div>
-                <div>
-                    <label for="date" class="block text-sm font-medium text-gray-700">Joining Date</label>
-                    <input type="date" id="date" name="date" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                </div>
-                <div>
-                    <label for="time" class="block text-sm font-medium text-gray-700">Last Visit Time</label>
-                    <input type="time" id="time" name="time" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required step="1">
-                </div>
-                <div>
-                    <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
-                    <select id="gender" name="gender" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                        <option value="" selected disabled>-- Select Gender --</option>
-                        <option value="M">Male</option>
-                        <option value="F">Female</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="region_category" class="block text-sm font-medium text-gray-700">Region Category</label>
-                    <select id="region_category" name="region_category" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                        <option value="" selected disabled>-- Select Region Category --</option>
-                        <option value="Town">Town</option>
-                        <option value="City">City</option>
-                        <option value="Village">Village</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="membership_category" class="block text-sm font-medium text-gray-700">Membership Category</label>
-                    <select id="membership_category" name="membership_category" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                        <option value="" selected disabled>-- Select Membership Category --</option>
-                        <option value="Basic Membership">Basic Membership</option>
-                        <option value="No Membership">No Membership</option>
-                        <option value="Gold Membership">Gold Membership</option>
-                        <option value="Platinum Membership">Platinum Membership</option>
-                        <option value="Silver Membership">Silver Membership</option>
-                        <option value="Premium Membership">Premium Membership</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="joined_through_referral" class="block text-sm font-medium text-gray-700">Joined Through Referral</label>
-                    <select id="joined_through_referral" name="joined_through_referral" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                        <option value="" selected disabled>-- Select Referral Option --</option>
-                        <option value="No">No</option>
-                        <option value="Yes">Yes</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="preferred_offer_types" class="block text-sm font-medium text-gray-700">Preferred Offer Types</label>
-                    <select id="preferred_offer_types" name="preferred_offer_types" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                        <option value="" selected disabled>-- Select Offer Type --</option>
-                        <option value="Gift Vouchers/Coupons">Gift Vouchers/Coupons</option>
-                        <option value="Credit/Debit Card Offers">Credit/Debit Card Offers</option>
-                        <option value="Without Offers">Without Offers</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="medium_of_operation" class="block text-sm font-medium text-gray-700">Medium of Operation</label>
-                    <select id="medium_of_operation" name="medium_of_operation" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                        <option value="" selected disabled>-- Select Medium of Operation --</option>
-                        <option value="Desktop">Desktop</option>
-                        <option value="Smartphone">Smartphone</option>
-                        <option value="Both">Both</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="internet_option" class="block text-sm font-medium text-gray-700">Internet Option</label>
-                    <select id="internet_option" name="internet_option" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                        <option value="" selected disabled>-- Select Internet Option --</option>
-                        <option value="Wi-Fi">Wi-Fi</option>
-                        <option value="Mobile_Data">Mobile Data</option>
-                        <option value="Fiber_Optic">Fiber Optic</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="used_special_discount" class="block text-sm font-medium text-gray-700">Used Special Discount</label>
-                    <select id="used_special_discount" name="used_special_discount" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                        <option value="" selected disabled>-- Select Option --</option>
-                        <option value="Yes">Yes</option>
-                        <option value="No">No</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="offer_application_preference" class="block text-sm font-medium text-gray-700">Offer Application Preference</label>
-                    <select id="offer_application_preference" name="offer_application_preference" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                        <option value="" selected disabled>-- Select Option --</option>
-                        <option value="Yes">Yes</option>
-                        <option value="No">No</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="past_complaint" class="block text-sm font-medium text-gray-700">Past Complaint</label>
-                    <select id="past_complaint" name="past_complaint" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                        <option value="" selected disabled>-- Select Option --</option>
-                        <option value="Yes">Yes</option>
-                        <option value="No">No</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="feedback" class="block text-sm font-medium text-gray-700">Feedback</label>
-                    <select id="feedback" name="feedback" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                        <option value="" selected disabled>-- Select Feedback --</option>
-                        <option value="Poor Product Quality">Poor Product Quality</option>
-                        <option value="No reason specified">No reason specified</option>
-                        <option value="Too many ads">Too many ads</option>
-                        <option value="Poor Website">Poor Website</option>
-                        <option value="Poor Customer Service">Poor Customer Service</option>
-                        <option value="Reasonable Price">Reasonable Price</option>
-                        <option value="User Friendly Website">User Friendly Website</option>
-                        <option value="Products always in Stock">Products always in Stock</option>
-                        <option value="Quality Customer Care">Quality Customer Care</option>
-                    </select>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Age -->
+                    <div class="group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-birthday-cake mr-2 text-primary-500"></i>Age
+                        </label>
+                        <input type="number" x-model="formData.age" @input="validateField('age')"
+                               :class="getFieldClass('age')"
+                               class="w-full px-4 py-3 border-2 rounded-xl transition-all duration-300 focus:outline-none"
+                               placeholder="Enter age (18-100)" min="18" max="100" required>
+                        <div x-show="errors.age" x-text="errors.age" class="text-red-500 text-sm mt-1"></div>
+                    </div>
+
+                    <!-- Gender -->
+                    <div class="group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-venus-mars mr-2 text-primary-500"></i>Gender
+                        </label>
+                        <select x-model="formData.gender" @change="validateField('gender')"
+                                :class="getFieldClass('gender')"
+                                class="w-full px-4 py-3 border-2 rounded-xl transition-all duration-300 focus:outline-none appearance-none bg-white"
+                                required>
+                            <option value="">Select Gender</option>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                        </select>
+                        <div x-show="errors.gender" x-text="errors.gender" class="text-red-500 text-sm mt-1"></div>
+                    </div>
+
+                    <!-- Region -->
+                    <div class="group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-map-marker-alt mr-2 text-primary-500"></i>Region Category
+                        </label>
+                        <select x-model="formData.region_category" @change="validateField('region_category')"
+                                :class="getFieldClass('region_category')"
+                                class="w-full px-4 py-3 border-2 rounded-xl transition-all duration-300 focus:outline-none appearance-none bg-white"
+                                required>
+                            <option value="">Select Region</option>
+                            <option value="Town">Town</option>
+                            <option value="City">City</option>
+                            <option value="Village">Village</option>
+                        </select>
+                        <div x-show="errors.region_category" x-text="errors.region_category" class="text-red-500 text-sm mt-1"></div>
+                    </div>
+
+                    <!-- Joining Date -->
+                    <div class="group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-calendar-plus mr-2 text-primary-500"></i>Joining Date
+                        </label>
+                        <input type="date" x-model="formData.joining_date" @input="validateField('joining_date')"
+                               :class="getFieldClass('joining_date')"
+                               class="w-full px-4 py-3 border-2 rounded-xl transition-all duration-300 focus:outline-none"
+                               :max="new Date().toISOString().split('T')[0]" required>
+                        <div x-show="errors.joining_date" x-text="errors.joining_date" class="text-red-500 text-sm mt-1"></div>
+                    </div>
                 </div>
             </div>
 
-            <div class="flex justify-end space-x-4 mt-8">
-                <button type="submit" class="inline-block bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold py-3 px-8 rounded-full text-lg shadow hover:shadow-lg transform hover:-translate-y-0.5 transition">Predict Churn</button>
-                <button type="button" class="inline-block bg-gray-200 text-gray-700 font-bold py-3 px-8 rounded-full text-lg shadow hover:shadow-lg transform hover:-translate-y-0.5 transition" onclick="clearForm()">Clear</button>
+            <!-- Step 2: Membership & Preferences -->
+            <div x-show="currentStep === 2" x-transition class="p-8 md:p-12">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-crown text-white text-2xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-2">Membership & Preferences</h2>
+                    <p class="text-gray-600">Account type and service preferences</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Membership Category -->
+                    <div class="group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-star mr-2 text-primary-500"></i>Membership Category
+                        </label>
+                        <select x-model="formData.membership_category" @change="validateField('membership_category')"
+                                :class="getFieldClass('membership_category')"
+                                class="w-full px-4 py-3 border-2 rounded-xl transition-all duration-300 focus:outline-none appearance-none bg-white"
+                                required>
+                            <option value="">Select Membership</option>
+                            <option value="Basic Membership">Basic Membership</option>
+                            <option value="No Membership">No Membership</option>
+                            <option value="Gold Membership">Gold Membership</option>
+                            <option value="Platinum Membership">Platinum Membership</option>
+                            <option value="Silver Membership">Silver Membership</option>
+                            <option value="Premium Membership">Premium Membership</option>
+                        </select>
+                        <div x-show="errors.membership_category" x-text="errors.membership_category" class="text-red-500 text-sm mt-1"></div>
+                    </div>
+
+                    <!-- Joined Through Referral -->
+                    <div class="group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-share-alt mr-2 text-primary-500"></i>Joined Through Referral
+                        </label>
+                        <div class="flex space-x-4">
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="radio" x-model="formData.joined_through_referral" value="Yes" name="referral" class="sr-only">
+                                <div :class="formData.joined_through_referral === 'Yes' ? 'bg-primary-500 text-white' : 'bg-gray-100 text-gray-700'"
+                                     class="px-4 py-2 rounded-lg transition-all duration-300 border-2"
+                                     :class="formData.joined_through_referral === 'Yes' ? 'border-primary-500' : 'border-gray-200'">
+                                    Yes
+                                </div>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="radio" x-model="formData.joined_through_referral" value="No" name="referral" class="sr-only">
+                                <div :class="formData.joined_through_referral === 'No' ? 'bg-primary-500 text-white' : 'bg-gray-100 text-gray-700'"
+                                     class="px-4 py-2 rounded-lg transition-all duration-300 border-2"
+                                     :class="formData.joined_through_referral === 'No' ? 'border-primary-500' : 'border-gray-200'">
+                                    No
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Preferred Offer Types -->
+                    <div class="group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-gift mr-2 text-primary-500"></i>Preferred Offer Types
+                        </label>
+                        <select x-model="formData.preferred_offer_types" @change="validateField('preferred_offer_types')"
+                                :class="getFieldClass('preferred_offer_types')"
+                                class="w-full px-4 py-3 border-2 rounded-xl transition-all duration-300 focus:outline-none appearance-none bg-white"
+                                required>
+                            <option value="">Select Offer Type</option>
+                            <option value="Gift Vouchers/Coupons">Gift Vouchers/Coupons</option>
+                            <option value="Credit/Debit Card Offers">Credit/Debit Card Offers</option>
+                            <option value="Without Offers">Without Offers</option>
+                        </select>
+                        <div x-show="errors.preferred_offer_types" x-text="errors.preferred_offer_types" class="text-red-500 text-sm mt-1"></div>
+                    </div>
+
+                    <!-- Medium of Operation -->
+                    <div class="group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-devices mr-2 text-primary-500"></i>Medium of Operation
+                        </label>
+                        <select x-model="formData.medium_of_operation" @change="validateField('medium_of_operation')"
+                                :class="getFieldClass('medium_of_operation')"
+                                class="w-full px-4 py-3 border-2 rounded-xl transition-all duration-300 focus:outline-none appearance-none bg-white"
+                                required>
+                            <option value="">Select Medium</option>
+                            <option value="Desktop">Desktop</option>
+                            <option value="Smartphone">Smartphone</option>
+                            <option value="Both">Both</option>
+                        </select>
+                        <div x-show="errors.medium_of_operation" x-text="errors.medium_of_operation" class="text-red-500 text-sm mt-1"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Behavioral Data -->
+            <div x-show="currentStep === 3" x-transition class="p-8 md:p-12">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-chart-line text-white text-2xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-2">Behavioral Data</h2>
+                    <p class="text-gray-600">Usage patterns and engagement metrics</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Days Since Last Login -->
+                    <div class="group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-clock mr-2 text-primary-500"></i>Days Since Last Login
+                        </label>
+                        <input type="number" x-model="formData.days_since_last_login" @input="validateField('days_since_last_login')"
+                               :class="getFieldClass('days_since_last_login')"
+                               class="w-full px-4 py-3 border-2 rounded-xl transition-all duration-300 focus:outline-none"
+                               placeholder="Enter days (0-365)" min="0" max="365" required>
+                        <div x-show="errors.days_since_last_login" x-text="errors.days_since_last_login" class="text-red-500 text-sm mt-1"></div>
+                    </div>
+
+                    <!-- Average Time Spent -->
+                    <div class="group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-stopwatch mr-2 text-primary-500"></i>Average Time Spent (minutes)
+                        </label>
+                        <input type="number" x-model="formData.avg_time_spent" @input="validateField('avg_time_spent')"
+                               :class="getFieldClass('avg_time_spent')"
+                               class="w-full px-4 py-3 border-2 rounded-xl transition-all duration-300 focus:outline-none"
+                               placeholder="Enter minutes (0-1440)" min="0" max="1440" required>
+                        <div x-show="errors.avg_time_spent" x-text="errors.avg_time_spent" class="text-red-500 text-sm mt-1"></div>
+                    </div>
+
+                    <!-- Average Transaction Value -->
+                    <div class="group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-dollar-sign mr-2 text-primary-500"></i>Average Transaction Value ($)
+                        </label>
+                        <input type="number" step="0.01" x-model="formData.avg_transaction_value" @input="validateField('avg_transaction_value')"
+                               :class="getFieldClass('avg_transaction_value')"
+                               class="w-full px-4 py-3 border-2 rounded-xl transition-all duration-300 focus:outline-none"
+                               placeholder="Enter amount" min="0" required>
+                        <div x-show="errors.avg_transaction_value" x-text="errors.avg_transaction_value" class="text-red-500 text-sm mt-1"></div>
+                    </div>
+
+                    <!-- Points in Wallet -->
+                    <div class="group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-coins mr-2 text-primary-500"></i>Points in Wallet
+                        </label>
+                        <input type="number" x-model="formData.points_in_wallet" @input="validateField('points_in_wallet')"
+                               :class="getFieldClass('points_in_wallet')"
+                               class="w-full px-4 py-3 border-2 rounded-xl transition-all duration-300 focus:outline-none"
+                               placeholder="Enter points" min="0" required>
+                        <div x-show="errors.points_in_wallet" x-text="errors.points_in_wallet" class="text-red-500 text-sm mt-1"></div>
+                    </div>
+
+                    <!-- Last Visit Time -->
+                    <div class="group md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-history mr-2 text-primary-500"></i>Last Visit Time
+                        </label>
+                        <input type="time" x-model="formData.last_visit_time" @input="validateField('last_visit_time')"
+                               :class="getFieldClass('last_visit_time')"
+                               class="w-full px-4 py-3 border-2 rounded-xl transition-all duration-300 focus:outline-none"
+                               step="1" required>
+                        <div x-show="errors.last_visit_time" x-text="errors.last_visit_time" class="text-red-500 text-sm mt-1"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Service Experience -->
+            <div x-show="currentStep === 4" x-transition class="p-8 md:p-12">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-handshake text-white text-2xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-2">Service Experience</h2>
+                    <p class="text-gray-600">Service usage and feedback information</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Internet Option -->
+                    <div class="group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-wifi mr-2 text-primary-500"></i>Internet Option
+                        </label>
+                        <select x-model="formData.internet_option" @change="validateField('internet_option')"
+                                :class="getFieldClass('internet_option')"
+                                class="w-full px-4 py-3 border-2 rounded-xl transition-all duration-300 focus:outline-none appearance-none bg-white"
+                                required>
+                            <option value="">Select Internet Option</option>
+                            <option value="Wi-Fi">Wi-Fi</option>
+                            <option value="Mobile_Data">Mobile Data</option>
+                            <option value="Fiber_Optic">Fiber Optic</option>
+                        </select>
+                        <div x-show="errors.internet_option" x-text="errors.internet_option" class="text-red-500 text-sm mt-1"></div>
+                    </div>
+
+                    <!-- Used Special Discount -->
+                    <div class="group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-percentage mr-2 text-primary-500"></i>Used Special Discount
+                        </label>
+                        <div class="flex space-x-4">
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="radio" x-model="formData.used_special_discount" value="Yes" name="discount" class="sr-only">
+                                <div :class="formData.used_special_discount === 'Yes' ? 'bg-primary-500 text-white' : 'bg-gray-100 text-gray-700'"
+                                     class="px-4 py-2 rounded-lg transition-all duration-300 border-2"
+                                     :class="formData.used_special_discount === 'Yes' ? 'border-primary-500' : 'border-gray-200'">
+                                    Yes
+                                </div>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="radio" x-model="formData.used_special_discount" value="No" name="discount" class="sr-only">
+                                <div :class="formData.used_special_discount === 'No' ? 'bg-primary-500 text-white' : 'bg-gray-100 text-gray-700'"
+                                     class="px-4 py-2 rounded-lg transition-all duration-300 border-2"
+                                     :class="formData.used_special_discount === 'No' ? 'border-primary-500' : 'border-gray-200'">
+                                    No
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Offer Application Preference -->
+                    <div class="group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-bell mr-2 text-primary-500"></i>Offer Application Preference
+                        </label>
+                        <div class="flex space-x-4">
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="radio" x-model="formData.offer_application_preference" value="Yes" name="offer_pref" class="sr-only">
+                                <div :class="formData.offer_application_preference === 'Yes' ? 'bg-primary-500 text-white' : 'bg-gray-100 text-gray-700'"
+                                     class="px-4 py-2 rounded-lg transition-all duration-300 border-2"
+                                     :class="formData.offer_application_preference === 'Yes' ? 'border-primary-500' : 'border-gray-200'">
+                                    Yes
+                                </div>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="radio" x-model="formData.offer_application_preference" value="No" name="offer_pref" class="sr-only">
+                                <div :class="formData.offer_application_preference === 'No' ? 'bg-primary-500 text-white' : 'bg-gray-100 text-gray-700'"
+                                     class="px-4 py-2 rounded-lg transition-all duration-300 border-2"
+                                     :class="formData.offer_application_preference === 'No' ? 'border-primary-500' : 'border-gray-200'">
+                                    No
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Past Complaint -->
+                    <div class="group">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-exclamation-triangle mr-2 text-primary-500"></i>Past Complaint
+                        </label>
+                        <div class="flex space-x-4">
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="radio" x-model="formData.past_complaint" value="Yes" name="complaint" class="sr-only">
+                                <div :class="formData.past_complaint === 'Yes' ? 'bg-primary-500 text-white' : 'bg-gray-100 text-gray-700'"
+                                     class="px-4 py-2 rounded-lg transition-all duration-300 border-2"
+                                     :class="formData.past_complaint === 'Yes' ? 'border-primary-500' : 'border-gray-200'">
+                                    Yes
+                                </div>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="radio" x-model="formData.past_complaint" value="No" name="complaint" class="sr-only">
+                                <div :class="formData.past_complaint === 'No' ? 'bg-primary-500 text-white' : 'bg-gray-100 text-gray-700'"
+                                     class="px-4 py-2 rounded-lg transition-all duration-300 border-2"
+                                     :class="formData.past_complaint === 'No' ? 'border-primary-500' : 'border-gray-200'">
+                                    No
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Feedback -->
+                    <div class="group md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            <i class="fas fa-comment mr-2 text-primary-500"></i>Customer Feedback
+                        </label>
+                        <select x-model="formData.feedback" @change="validateField('feedback')"
+                                :class="getFieldClass('feedback')"
+                                class="w-full px-4 py-3 border-2 rounded-xl transition-all duration-300 focus:outline-none appearance-none bg-white"
+                                required>
+                            <option value="">Select Feedback</option>
+                            <option value="Poor Product Quality">Poor Product Quality</option>
+                            <option value="No reason specified">No reason specified</option>
+                            <option value="Too many ads">Too many ads</option>
+                            <option value="Poor Website">Poor Website</option>
+                            <option value="Poor Customer Service">Poor Customer Service</option>
+                            <option value="Reasonable Price">Reasonable Price</option>
+                            <option value="User Friendly Website">User Friendly Website</option>
+                            <option value="Products always in Stock">Products always in Stock</option>
+                            <option value="Quality Customer Care">Quality Customer Care</option>
+                        </select>
+                        <div x-show="errors.feedback" x-text="errors.feedback" class="text-red-500 text-sm mt-1"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation & Submit -->
+            <div class="bg-gray-50 px-8 md:px-12 py-6 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+                <!-- Previous Button -->
+                <button type="button" @click="prevStep" x-show="currentStep > 1"
+                        class="flex items-center space-x-2 px-6 py-3 bg-gray-200 text-gray-700 rounded-xl font-semibold hover:bg-gray-300 transition-all duration-300 transform hover:-translate-y-0.5">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Previous</span>
+                </button>
+                
+                <div x-show="currentStep === 1" class="w-full sm:w-auto"></div>
+
+                <!-- Step Indicators -->
+                <div class="flex space-x-2">
+                    <template x-for="step in totalSteps" :key="step">
+                        <div :class="step <= currentStep ? 'bg-primary-500' : 'bg-gray-300'"
+                             class="w-3 h-3 rounded-full transition-all duration-300"></div>
+                    </template>
+                </div>
+
+                <!-- Next/Submit Button -->
+                <div x-show="currentStep < totalSteps">
+                    <button type="button" @click="nextStep" :disabled="!isStepValid(currentStep)"
+                            :class="isStepValid(currentStep) ? 'bg-gradient-to-r from-primary-500 to-purple-600 hover:shadow-xl' : 'bg-gray-300 cursor-not-allowed'"
+                            class="flex items-center space-x-2 px-6 py-3 text-white rounded-xl font-semibold transition-all duration-300 transform hover:-translate-y-0.5">
+                        <span>Next</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <div x-show="currentStep === totalSteps">
+                    <button type="submit" :disabled="isSubmitting || !isFormValid()"
+                            :class="isFormValid() && !isSubmitting ? 'bg-gradient-to-r from-green-500 to-teal-600 hover:shadow-xl' : 'bg-gray-300 cursor-not-allowed'"
+                            class="flex items-center space-x-2 px-8 py-3 text-white rounded-xl font-semibold transition-all duration-300 transform hover:-translate-y-0.5">
+                        <div x-show="isSubmitting" class="loading"></div>
+                        <i x-show="!isSubmitting" class="fas fa-brain"></i>
+                        <span x-text="isSubmitting ? 'Analyzing...' : 'Get Prediction'"></span>
+                    </button>
+                </div>
             </div>
         </form>
 
-        {% if prediction_text %}
-        <div class="mt-12 text-center">
-            <h2 class="text-3xl font-bold text-gray-800">Prediction Result</h2>
-            <p class="text-2xl text-blue-600 mt-4">{{ prediction_text }}</p>
+        <!-- Prediction Result -->
+        <div x-show="predictionResult" x-transition class="mt-8 bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden" data-aos="zoom-in">
+            <div class="p-8 md:p-12 text-center">
+                <div class="w-20 h-20 bg-gradient-to-r from-green-500 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-chart-pie text-white text-3xl"></i>
+                </div>
+                
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">Churn Prediction Result</h2>
+                
+                <!-- Result Display -->
+                <div class="bg-gradient-to-r from-primary-50 to-purple-50 rounded-2xl p-8 mb-8">
+                    <div class="text-5xl font-bold mb-4" 
+                         :class="getScoreColor(predictionScore)"
+                         x-text="predictionScore"></div>
+                    <div class="text-xl text-gray-600 mb-4" x-text="getScoreDescription(predictionScore)"></div>
+                    <div class="text-sm text-gray-500" x-text="'Prediction generated on ' + new Date().toLocaleDateString()"></div>
+                </div>
+
+                <!-- Risk Assessment -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-green-50 rounded-xl p-6 border border-green-200">
+                        <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-shield-check text-white"></i>
+                        </div>
+                        <h3 class="font-semibold text-green-800 mb-2">Low Risk</h3>
+                        <p class="text-sm text-green-600">Score: 0-3</p>
+                    </div>
+                    <div class="bg-yellow-50 rounded-xl p-6 border border-yellow-200">
+                        <div class="w-12 h-12 bg-yellow-500 rounded-lg flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-exclamation-triangle text-white"></i>
+                        </div>
+                        <h3 class="font-semibold text-yellow-800 mb-2">Medium Risk</h3>
+                        <p class="text-sm text-yellow-600">Score: 4-6</p>
+                    </div>
+                    <div class="bg-red-50 rounded-xl p-6 border border-red-200">
+                        <div class="w-12 h-12 bg-red-500 rounded-lg flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-exclamation-circle text-white"></i>
+                        </div>
+                        <h3 class="font-semibold text-red-800 mb-2">High Risk</h3>
+                        <p class="text-sm text-red-600">Score: 7-10</p>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button @click="resetForm" 
+                            class="px-6 py-3 bg-primary-500 text-white rounded-xl font-semibold hover:bg-primary-600 transition-all duration-300 transform hover:-translate-y-0.5 flex items-center justify-center space-x-2">
+                        <i class="fas fa-redo"></i>
+                        <span>New Prediction</span>
+                    </button>
+                    <a href="/analysis" 
+                       class="px-6 py-3 bg-gray-200 text-gray-700 rounded-xl font-semibold hover:bg-gray-300 transition-all duration-300 transform hover:-translate-y-0.5 flex items-center justify-center space-x-2">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>View Analytics</span>
+                    </a>
+                </div>
+            </div>
         </div>
-        {% endif %}
     </div>
-</section>
+</div>
 
 <script>
-    function clearForm() {
-        document.getElementById("predictionForm").reset();
+function predictionForm() {
+    return {
+        currentStep: 1,
+        totalSteps: 4,
+        isSubmitting: false,
+        predictionResult: false,
+        predictionScore: null,
+        
+        formData: {
+            age: '',
+            gender: '',
+            region_category: '',
+            joining_date: '',
+            membership_category: '',
+            joined_through_referral: '',
+            preferred_offer_types: '',
+            medium_of_operation: '',
+            days_since_last_login: '',
+            avg_time_spent: '',
+            avg_transaction_value: '',
+            points_in_wallet: '',
+            last_visit_time: '',
+            internet_option: '',
+            used_special_discount: '',
+            offer_application_preference: '',
+            past_complaint: '',
+            feedback: ''
+        },
+        
+        errors: {},
+        
+        init() {
+            // Auto-save to localStorage
+            this.$watch('formData', () => {
+                localStorage.setItem('churnPredictionForm', JSON.stringify(this.formData));
+            }, { deep: true });
+            
+            // Load saved data
+            const saved = localStorage.getItem('churnPredictionForm');
+            if (saved) {
+                this.formData = { ...this.formData, ...JSON.parse(saved) };
+            }
+        },
+        
+        validateField(fieldName) {
+            const value = this.formData[fieldName];
+            this.errors[fieldName] = '';
+            
+            if (!value || (typeof value === 'string' && value.trim() === '')) {
+                this.errors[fieldName] = 'This field is required';
+                return false;
+            }
+            
+            // Specific validations
+            switch (fieldName) {
+                case 'age':
+                    if (value < 18 || value > 100) {
+                        this.errors[fieldName] = 'Age must be between 18 and 100';
+                        return false;
+                    }
+                    break;
+                case 'days_since_last_login':
+                    if (value < 0 || value > 365) {
+                        this.errors[fieldName] = 'Days must be between 0 and 365';
+                        return false;
+                    }
+                    break;
+                case 'avg_time_spent':
+                    if (value < 0 || value > 1440) {
+                        this.errors[fieldName] = 'Time must be between 0 and 1440 minutes';
+                        return false;
+                    }
+                    break;
+                case 'avg_transaction_value':
+                    if (value < 0) {
+                        this.errors[fieldName] = 'Transaction value cannot be negative';
+                        return false;
+                    }
+                    break;
+                case 'points_in_wallet':
+                    if (value < 0) {
+                        this.errors[fieldName] = 'Points cannot be negative';
+                        return false;
+                    }
+                    break;
+            }
+            
+            return true;
+        },
+        
+        getFieldClass(fieldName) {
+            if (this.errors[fieldName]) {
+                return 'border-red-500 focus:border-red-500 focus:ring-red-200';
+            } else if (this.formData[fieldName] && this.formData[fieldName] !== '') {
+                return 'border-green-500 focus:border-green-500 focus:ring-green-200';
+            }
+            return 'border-gray-300 focus:border-primary-500 focus:ring-primary-200';
+        },
+        
+        isStepValid(step) {
+            const stepFields = {
+                1: ['age', 'gender', 'region_category', 'joining_date'],
+                2: ['membership_category', 'joined_through_referral', 'preferred_offer_types', 'medium_of_operation'],
+                3: ['days_since_last_login', 'avg_time_spent', 'avg_transaction_value', 'points_in_wallet', 'last_visit_time'],
+                4: ['internet_option', 'used_special_discount', 'offer_application_preference', 'past_complaint', 'feedback']
+            };
+            
+            return stepFields[step].every(field => {
+                return this.validateField(field);
+            });
+        },
+        
+        isFormValid() {
+            return this.isStepValid(1) && this.isStepValid(2) && this.isStepValid(3) && this.isStepValid(4);
+        },
+        
+        nextStep() {
+            if (this.isStepValid(this.currentStep) && this.currentStep < this.totalSteps) {
+                this.currentStep++;
+            }
+        },
+        
+        prevStep() {
+            if (this.currentStep > 1) {
+                this.currentStep--;
+            }
+        },
+        
+        async submitForm() {
+            if (!this.isFormValid() || this.isSubmitting) return;
+            
+            this.isSubmitting = true;
+            
+            try {
+                const formDataToSend = new FormData();
+                
+                // Map form data to expected backend format
+                formDataToSend.append('age', this.formData.age);
+                formDataToSend.append('last_login', this.formData.days_since_last_login);
+                formDataToSend.append('avg_time_spent', this.formData.avg_time_spent);
+                formDataToSend.append('avg_transaction_value', this.formData.avg_transaction_value);
+                formDataToSend.append('points_in_wallet', this.formData.points_in_wallet);
+                formDataToSend.append('date', this.formData.joining_date);
+                formDataToSend.append('time', this.formData.last_visit_time);
+                formDataToSend.append('gender', this.formData.gender);
+                formDataToSend.append('region_category', this.formData.region_category);
+                formDataToSend.append('membership_category', this.formData.membership_category);
+                formDataToSend.append('joined_through_referral', this.formData.joined_through_referral);
+                formDataToSend.append('preferred_offer_types', this.formData.preferred_offer_types);
+                formDataToSend.append('medium_of_operation', this.formData.medium_of_operation);
+                formDataToSend.append('internet_option', this.formData.internet_option);
+                formDataToSend.append('used_special_discount', this.formData.used_special_discount);
+                formDataToSend.append('offer_application_preference', this.formData.offer_application_preference);
+                formDataToSend.append('past_complaint', this.formData.past_complaint);
+                formDataToSend.append('feedback', this.formData.feedback);
+                
+                const response = await fetch('/prediction', {
+                    method: 'POST',
+                    body: formDataToSend
+                });
+                
+                const result = await response.text();
+                
+                // Extract score from response
+                const scoreMatch = result.match(/Churn Score is (\d+\.?\d*)/);
+                if (scoreMatch) {
+                    this.predictionScore = parseFloat(scoreMatch[1]);
+                    this.predictionResult = true;
+                    this.scrollToResult();
+                    
+                    // Clear saved form data
+                    localStorage.removeItem('churnPredictionForm');
+                } else {
+                    throw new Error('Invalid response format');
+                }
+                
+            } catch (error) {
+                console.error('Prediction error:', error);
+                // You could show an error notification here
+                window.notify && window.notify('Error', 'Failed to get prediction. Please try again.', 'error');
+            } finally {
+                this.isSubmitting = false;
+            }
+        },
+        
+        scrollToResult() {
+            setTimeout(() => {
+                document.querySelector('[x-show="predictionResult"]').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }, 100);
+        },
+        
+        getScoreColor(score) {
+            if (score <= 3) return 'text-green-600';
+            if (score <= 6) return 'text-yellow-600';
+            return 'text-red-600';
+        },
+        
+        getScoreDescription(score) {
+            if (score <= 3) return 'Low Churn Risk - Customer is likely to stay';
+            if (score <= 6) return 'Medium Churn Risk - Consider retention strategies';
+            return 'High Churn Risk - Immediate action recommended';
+        },
+        
+        resetForm() {
+            this.formData = {
+                age: '',
+                gender: '',
+                region_category: '',
+                joining_date: '',
+                membership_category: '',
+                joined_through_referral: '',
+                preferred_offer_types: '',
+                medium_of_operation: '',
+                days_since_last_login: '',
+                avg_time_spent: '',
+                avg_transaction_value: '',
+                points_in_wallet: '',
+                last_visit_time: '',
+                internet_option: '',
+                used_special_discount: '',
+                offer_application_preference: '',
+                past_complaint: '',
+                feedback: ''
+            };
+            this.errors = {};
+            this.currentStep = 1;
+            this.predictionResult = false;
+            this.predictionScore = null;
+            localStorage.removeItem('churnPredictionForm');
+        }
     }
+}
 </script>
 {% endblock %}

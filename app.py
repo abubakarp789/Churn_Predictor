@@ -26,7 +26,7 @@ def home():
 @app.route('/analysis')
 def analysis():
     # Categorical features distribution
-    cat_features = ['gender', 'region_category', 'membership_category', 'preferred_offer_types']
+    cat_features = ['gender', 'region_category', 'membership_category', 'preferred_offer_types', 'feedback']
     cat_data = {}
     for feature in cat_features:
         cat_data[feature] = df[feature].value_counts().to_dict()
@@ -35,7 +35,12 @@ def analysis():
     churn_data = df['churn_risk_score'].value_counts().to_dict()
 
     # Feature importances
-    feature_importances = dict(zip(model.feature_names_in_, model.feature_importances_))
+    # Get feature importances from the model
+    importances = model.feature_importances_
+    # Get feature names
+    feature_names = model.feature_names_in_
+    # Create a dictionary of feature importances
+    feature_importances = dict(zip(feature_names, importances))
 
     return render_template("analysis.html", 
                            cat_data=cat_data, 
@@ -77,8 +82,15 @@ def prediction():
 
             # Make prediction
             prediction = model.predict(processed_df)
+            churn_score = prediction[0]
 
-            return render_template("prediction.html", prediction_text=f"Churn Score is {prediction[0]}")
+            # Create prediction text
+            if churn_score >= 3:
+                prediction_text = f"High risk of churn (Score: {churn_score})"
+            else:
+                prediction_text = f"Low risk of churn (Score: {churn_score})"
+
+            return render_template("prediction.html", prediction_text=prediction_text)
         except Exception as e:
             return render_template("prediction.html", prediction_text=f"Error: {e}")
     else:
